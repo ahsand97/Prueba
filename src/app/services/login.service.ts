@@ -14,8 +14,8 @@ export class LoginService {
     this.url = environment.apiUrl;
   }
 
-  login(usuario:{'correo':any, 'password':any}){
+  login(profesor:{'correo':any, 'password':any}){
     let header = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.post<Profesor>(this.url + '/profesores', usuario, {headers:header});
+    return this.http.post<Profesor>(this.url + '/profesores', profesor, {headers:header});
   }
 }

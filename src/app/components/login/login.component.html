@@ -1,1 +1,36 @@
-<p>login works!</p>
+<body>
+    <div class="row">
+      <div class="card col-md-4 col-md-offset-4 centrar sombra opacidad" style="width: 18rem;">
+        <div class="card-body">
+            <form [formGroup]="loginForm" #formDirective="ngForm" (ngSubmit)="login(formDirective)" autocomplete="off">
+              <div id="Centrar-formulario">
+                <h3 id="tituloLogin" class="text-center text-info">INGRESO PROFESORES APLICATIVO PARA REALIZAR EXAMENES</h3><br>
+                <div class="form-group">
+                  <mat-form-field class="col-xs-12">
+                    <mat-label for="email" class="text-info">Correo Electrónico:</mat-label><br>
+                    <input matInput type="email" formControlName="email" (click)="hideError()">
+                    <mat-error *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.required">Escribe un email</mat-error>
+                    <mat-error *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.email">Escribe un email válido</mat-error>   
+                  </mat-form-field>
+                </div>
+                <div class="form-group">
+                  <mat-form-field class="col-xs-12">
+                    <mat-label for="password" class="text-info">Contraseña:</mat-label><br>
+                    <input #inputPassword matInput type="password" formControlName="password" (click)="hideError()">
+                    <mat-error *ngIf="(password.dirty || password.touched) && password.invalid && password.errors.required">Escribe la contraseña</mat-error>
+                    <mat-error *ngIf="(password.dirty || password.touched) && password.invalid && password.errors.minlength">La contraseña debe contener mínimo 4 caracteres</mat-error>
+                    <mat-error *ngIf="(password.dirty || password.touched) && password.invalid && password.errors.maxlength">La contraseña debe contener máximo 30 caracteres</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <button id="boton-ingreso" mat-raised-button class="btn btn-info btn-md" type="submit" [disabled]="!loginForm.valid">Ingresar</button>
+                </div>
+              </div>
+            </form>
+            <div #errorServidor id="error-servidor" class="alert alert-danger">
+              No se ha encontrado el correo y la contraseña en el sistema
+            </div>
+        </div>
+      </div>
+    </div>
+  </body>
