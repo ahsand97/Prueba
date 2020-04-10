@@ -8,7 +8,7 @@ export class AuthService {
   constructor() { }
 
   getIdentity(){
-    let identity=JSON.parse(sessionStorage.getItem('identidad_profesor'));
+    let identity=JSON.parse(localStorage.getItem('identidad_profesor'));
     if(identity){
       return identity;
     }
@@ -18,12 +18,12 @@ export class AuthService {
   }
 
   setIdentity(nuevaidentidad: any){
-    sessionStorage.removeItem('identidad_profesor');
-    sessionStorage.setItem('identidad_profesor', JSON.stringify(nuevaidentidad));
+    localStorage.removeItem('identidad_profesor');
+    localStorage.setItem('identidad_profesor', JSON.stringify(nuevaidentidad));
   }
 
   logOut(){
-    sessionStorage.removeItem('identidad_profesor');
-    sessionStorage.clear();
+    localStorage.removeItem('identidad_profesor');
+    localStorage.clear();
   }
 }

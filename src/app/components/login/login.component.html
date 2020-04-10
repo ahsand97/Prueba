@@ -8,7 +8,7 @@
                 <div class="form-group">
                   <mat-form-field class="col-xs-12">
                     <mat-label for="email" class="text-info">Correo Electrónico:</mat-label><br>
-                    <input matInput type="email" formControlName="email" (click)="hideError()">
+                    <input #inputEmail matInput type="email" formControlName="email" (click)="hideError()" (focus)="hideError()">
                     <mat-error *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.required">Escribe un email</mat-error>
                     <mat-error *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.email">Escribe un email válido</mat-error>   
                   </mat-form-field>
@@ -16,7 +16,7 @@
                 <div class="form-group">
                   <mat-form-field class="col-xs-12">
                     <mat-label for="password" class="text-info">Contraseña:</mat-label><br>
-                    <input #inputPassword matInput type="password" formControlName="password" (click)="hideError()">
+                    <input #inputPassword matInput type="password" formControlName="password" (click)="hideError()" (focus)="hideError()">
                     <mat-error *ngIf="(password.dirty || password.touched) && password.invalid && password.errors.required">Escribe la contraseña</mat-error>
                     <mat-error *ngIf="(password.dirty || password.touched) && password.invalid && password.errors.minlength">La contraseña debe contener mínimo 4 caracteres</mat-error>
                     <mat-error *ngIf="(password.dirty || password.touched) && password.invalid && password.errors.maxlength">La contraseña debe contener máximo 30 caracteres</mat-error>
@@ -28,7 +28,7 @@
               </div>
             </form>
             <div #errorServidor id="error-servidor" class="alert alert-danger">
-              No se ha encontrado el correo y la contraseña en el sistema
+              
             </div>
         </div>
       </div>

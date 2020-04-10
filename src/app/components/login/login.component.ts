@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   loginForm:FormGroup;
   @ViewChild('errorServidor') errorServidor: ElementRef;
   @ViewChild('inputPassword') inputPassword: ElementRef;
+  @ViewChild('inputEmail') inputEmail: ElementRef;
   
   constructor(private title:Title, private loginService:LoginService, private router:Router, private formBuilder:FormBuilder, private authServie:AuthService) { 
     this.title.setTitle('Login');
@@ -30,21 +31,25 @@ export class LoginComponent implements OnInit {
   get password() { return this.loginForm.get('password'); }
 
   hideError(){
-    this.errorServidor.nativeElement.display = 'none';
+    this.errorServidor.nativeElement.style.display = 'none';
   }
 
   login(formDirective:FormGroupDirective){
-    console.log(this.email.value,this.password.value);
-    formDirective.resetForm();
-		this.inputPassword.nativeElement.blur();
-    this.loginForm.reset();
     
-    let profesor = {'correo': this.email.value, 'password': this.password.value};
-    this.loginService.login(profesor).toPromise().then(respuesta => {
-      //this.authServie.setIdentity()
-      console.log(respuesta);
-    }).catch(() => {
-      this.errorServidor.nativeElement.display = 'block';
+    let profesor = {'email': this.email.value, 'clave': this.password.value};
+    this.loginService.login(profesor).subscribe({
+      next: data => {
+        this.authServie.setIdentity(data);
+        this.router.navigate(['main']);
+      },
+      error: error => {
+        this.errorServidor.nativeElement.innerHTML = error.error;
+        this.errorServidor.nativeElement.style.display = 'block';
+        this.inputEmail.nativeElement.blur();
+        this.inputPassword.nativeElement.blur();
+        formDirective.resetForm();
+        this.loginForm.reset();
+      }
     });
   }
 }

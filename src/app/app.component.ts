@@ -10,7 +10,7 @@ import { MatdialogComponent } from './components/matdialog/matdialog.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   title = 'FrontEnd';
   inactivo:boolean = null;
   identity:any = null;
@@ -41,13 +41,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(){
-    this.userIdle.stopWatching();
-    this.userIdle.onTimerStart().subscribe().unsubscribe();
-    this.userIdle.onIdleStatusChanged().subscribe().unsubscribe();
-    this.userIdle.onTimeout().subscribe().unsubscribe();
-  }
-
   check(){
     this.userIdle.stopTimer();
     if(this.inactivo == true){
@@ -67,12 +60,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.dialogoAbierto = false;
       });
     }
-  }
-
-
-  @HostListener('window:beforeunload')
-  doSomething() {
-    this.ngOnDestroy();
   }
 
   @HostListener('document:mousemove', ['$event']) 
