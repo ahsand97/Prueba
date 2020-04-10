@@ -8,6 +8,6 @@
  * Created: 6/04/2020
  */
 INSERT INTO profesores(nombre, email, clave) VALUES
-('Cesar Augusto Díaz', 'black@utp.edu.co', '123'),
-('Julio Cesar Jaramillo', 'jucelo@utp.edu.co', '456'),
-('Julio Cesar Chavarro', 'chavarro@utp.edu.co', '789')
+('Cesar Augusto Díaz', 'black@utp.edu.co', '1234'),
+('Julio Cesar Jaramillo', 'jucelo@utp.edu.co', '4567'),
+('Julio Cesar Chavarro', 'chavarro@utp.edu.co', '8901')
