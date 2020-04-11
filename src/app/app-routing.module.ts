@@ -13,9 +13,12 @@ const routes: Routes = [
     path:'login', component:LoginComponent, canActivate:[GuardService], data:{'destino':['login']}
   },
   {
+    path:'main', component:MainComponent
+  },
+  /*{
     path:'main', component:MainComponent, canActivate:[GuardService], data:{'destino':['main']},
       children:[]
-  },
+  },*/
   {
     path:'', pathMatch:'full', redirectTo:'login'
   }
