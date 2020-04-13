@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  *
@@ -50,8 +51,10 @@ public class Pregunta implements Serializable{
     @Column(nullable = false)
     private BigDecimal valoracion;
     
+    @Column(nullable = false)
     private String dtype;
     
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "examen_id", nullable = false)
     private Examen examen;

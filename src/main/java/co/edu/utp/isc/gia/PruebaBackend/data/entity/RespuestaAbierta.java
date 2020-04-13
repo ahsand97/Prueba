@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import lombok.ToString;
 
 /**
  *
@@ -27,6 +28,7 @@ public class RespuestaAbierta extends Respuesta {
     @Column(nullable = false)
     private String respuesta;
     
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "pregunta_id", nullable = false)
     private PreguntaRespuestaAbierta preguntaRespuestaAbierta;

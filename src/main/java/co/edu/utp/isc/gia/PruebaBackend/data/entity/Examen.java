@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -47,6 +48,7 @@ public class Examen implements Serializable{
     @Column(nullable = false)
     private BigDecimal nota_maxima;
     
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "profesor_id", nullable = false)
     private Profesor profesor;

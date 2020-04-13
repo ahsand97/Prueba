@@ -6,7 +6,9 @@
 package co.edu.utp.isc.gia.PruebaBackend.web.controller;
 
 import co.edu.utp.isc.gia.PruebaBackend.service.ProfesorService;
+import co.edu.utp.isc.gia.PruebaBackend.web.dto.ExamenDTO;
 import co.edu.utp.isc.gia.PruebaBackend.web.dto.ProfesorDTO;
+import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -49,6 +52,17 @@ public class ProfesorController {
             catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
             }
+        }
+    }
+    
+    @GetMapping("/")
+    public ResponseEntity<?> getExamenes(@RequestParam("idProfesor") String idProfesor){
+        try{
+            List<ExamenDTO> resp = profesorService.getExamenes(idProfesor);
+            return ResponseEntity.status(HttpStatus.OK).body(resp);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
     

@@ -5,8 +5,8 @@
  */
 package co.edu.utp.isc.gia.PruebaBackend.service;
 
-import co.edu.utp.isc.gia.PruebaBackend.data.entity.Profesor;
-import co.edu.utp.isc.gia.PruebaBackend.web.dto.ProfesorDTO;
+import co.edu.utp.isc.gia.PruebaBackend.data.entity.Examen;
+import co.edu.utp.isc.gia.PruebaBackend.web.dto.ExamenDTO;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,12 +16,15 @@ import org.mapstruct.Mapping;
  * @author ahsan
  */
 @Mapper(componentModel = "spring")
-public interface ProfesorMapper {
+public interface ExamenMapper {
     
-    @Mapping(target = "examenes", ignore = true)
-    Profesor toProfesor(ProfesorDTO profesorDTO);
+    @Mapping(target = "profesor", ignore = true)
+    @Mapping(target = "preguntas", ignore = true)
+    Examen toExamen(ExamenDTO examenDTO);
     
     @InheritInverseConfiguration
-    ProfesorDTO fromProfesor(Profesor profesor);
+    @Mapping(target = "profesor_id", ignore = true)
+    @Mapping(target = "cantidad_preguntas", ignore = true)
+    ExamenDTO fromExamen(Examen examen);
     
 }

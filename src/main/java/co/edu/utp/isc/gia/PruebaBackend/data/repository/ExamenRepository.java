@@ -5,7 +5,7 @@
  */
 package co.edu.utp.isc.gia.PruebaBackend.data.repository;
 
-import co.edu.utp.isc.gia.PruebaBackend.data.entity.Profesor;
+import co.edu.utp.isc.gia.PruebaBackend.data.entity.Examen;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Repository;
  * @author ahsan
  */
 @Repository
-public interface ProfesorRepository extends CrudRepository<Profesor, Long>{
+public interface ExamenRepository extends CrudRepository<Examen, Long>{
     
-    @Query(value="SELECT * FROM profesores WHERE email = :email", nativeQuery=true)
-    Profesor findByEmail(@Param("email") String email);
+    @Query(value="SELECT * FROM examenes WHERE profesor_id = :idProfesor", nativeQuery=true)
+    Iterable<Examen> findAllExamenesByIdProfesor(@Param("idProfesor") String idProfesor);
 }

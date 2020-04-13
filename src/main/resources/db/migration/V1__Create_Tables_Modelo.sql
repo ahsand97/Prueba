@@ -40,7 +40,7 @@ CREATE TABLE preguntas (
     descripcion  VARCHAR(255) NOT NULL,
     imagen BINARY DEFAULT NULL,
     valoracion DECIMAL NOT NULL,
-    dtype VARCHAR(255),
+    dtype VARCHAR(255) NOT NULL,
     examen_id BIGINT NOT NULL
 );
 ALTER TABLE preguntas ADD FOREIGN KEY (examen_id) REFERENCES examenes(id) ON DELETE CASCADE;
