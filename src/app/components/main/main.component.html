@@ -1,6 +1,3 @@
-
-
-
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,14 +17,14 @@
 					<a class="nav-link">
 						<img src="../../../assets/profesor.svg" style="width: 48px; height: 48px;">
 						<h1 style="display: inline-block; font-weight: bold; margin-right: 8px;">Profesor:</h1>
-						<h2 style="display: inline-block;">Cesar Augusto Díaz</h2>
+						<h2 style="display: inline-block;">{{identity.nombre}}</h2>
 					</a>
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link">
 						<img src="../../../assets/correo.svg" style="width: 48px; height: 48px; padding-bottom: 8px;">
 						<h1 style="display: inline-block; font-weight: bold; margin-right: 8px;">Correo:</h1>
-						<h2 style="display: inline-block;">black@utp.edu.co</h2>
+						<h2 style="display: inline-block;">{{identity.email}}</h2>
 					</a>
 				</li>
 			</ul>
@@ -47,93 +44,55 @@
 			</ul>
 		</div>
 	</nav>
-
-<section id="services" class="services">
-<div class="container">
-
-	<br>
-	<div class="section-title" data-aos="fade-up">
-	  <h2>EXAMENES</h2>
-	</div>
-
-	<div class="row">
-	  <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-		<div class="icon-box">
-		  <div>
-			  <img class="img" src="../../../assets/document.png"/>
+	<section id="services" class="services">
+		<div class="container">
+			<br>
+			<div class="section-title" data-aos="fade-up">
+				<h2 id="tituloExamenes">EXÁMENES</h2>
 			</div>
-		  <h4><a href="">Lorem Ipsum</a></h4>
-		  <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
+			<div class="row">
+				<ng-container *ngFor="let examen of examenesImagenesList; index as i">
+					<div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-ld-0">
+						<div class="icon-box" (mouseover)="mouseEncimaCardExamen(i)" (mouseout)="mouseFueraCardExamen(i)">
+							<img src='../../../assets/examen.svg' style="width: 128px; height: 128px; margin-top: -60px;">
+							<br>
+							<br>
+							<h4 style="text-align: left; padding-bottom: -5px;">Descripción: </h4>
+							<p style="text-align: left; font-size: 18px; max-width: 100%; text-overflow: clip;">{{examen.examen.descripcion}}</p> 
+							<br>
+							<h2 style="font-weight:bold; text-align: left; margin-bottom: -5px;">
+								Cantidad de Preguntas:
+								<p style="font-weight:normal; font-size: 18px; display: inline-block; max-width: 100%; text-overflow: clip;">{{examen.examen.cantidad_preguntas}}</p>
+							</h2>
+							<h2 style="font-weight:bold; text-align: left;">
+								Nota máxima:
+								<p style="font-weight:normal; font-size: 18px; display: inline-block; max-width: 100%; text-overflow: clip;">{{examen.examen.nota_maxima}}</p>
+							</h2>
+							<div style="text-align: left; margin-top: 20px; margin-bottom: -60px;">
+								<button  mat-icon-button style="color:brown;">
+									<img src={{examen.imagenes.ver}} style="width: 32px; height: 32px;">
+									Ver
+								</button>
+								<br>
+								<button mat-icon-button color="primary">
+									<img src={{examen.imagenes.editar}} style="width: 32px; height: 32px;">
+									Editar
+								</button>
+								<br>
+								<button mat-icon-button style="color:teal;">
+									<img src={{examen.imagenes.link}} style="width: 32px; height: 32px;">
+									Generar link para realizar exámen
+								</button>
+								<br>
+								<button mat-icon-button color="warn">
+									<img src={{examen.imagenes.borrar}} style="width: 32px; height: 32px;">
+									Borrar
+								</button>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+			</div>
 		</div>
-	  </div>
-
-	  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
-		<div class="icon-box">
-		  <div class="icon"><i class="bx bx-file"></i></div>
-		  <h4><a href="">Sed ut perspiciatis</a></h4>
-		  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-		</div>
-	  </div>
-
-	  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
-		<div class="icon-box">
-		  <div class="icon"><i class="bx bx-tachometer"></i></div>
-		  <h4><a href="">Magni Dolores</a></h4>
-		  <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>
-		</div>
-	  </div>
-
-	  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-		<div class="icon-box">
-		  <div class="icon"><i class="bx bx-world"></i></div>
-		  <h4><a href="">Nemo Enim</a></h4>
-		  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
-		</div>
-	  </div>
-
-	  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-		<div class="icon-box">
-		  <div class="icon"><i class="bx bx-slideshow"></i></div>
-		  <h4><a href="">Dele cardo</a></h4>
-		  <p>Quis consequatur saepe eligendi voluptatem consequatur dolor consequuntur</p>
-		</div>
-	  </div>
-
-	  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-		<div class="icon-box">
-		  <div class="icon"><i class="bx bx-arch"></i></div>
-		  <h4><a href="">Divera don</a></h4>
-		  <p>Modi nostrum vel laborum. Porro fugit error sit minus sapiente sit aspernatur</p>
-		</div>
-	  </div>
-
-	  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-		<div class="icon-box">
-		  <div class="icon"><i class="bx bx-world"></i></div>
-		  <h4><a href="">Nemo Enim</a></h4>
-		  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
-		</div>
-	  </div>
-
-	  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-		<div class="icon-box">
-		  <div class="icon"><i class="bx bx-slideshow"></i></div>
-		  <h4><a href="">Dele cardo</a></h4>
-		  <p>Quis consequatur saepe eligendi voluptatem consequatur dolor consequuntur</p>
-		</div>
-	  </div>
-
-	  <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
-		<div class="icon-box">
-		  <div class="icon"><i class="bx bx-arch"></i></div>
-		  <h4><a href="">Divera don</a></h4>
-		  <p>Modi nostrum vel laborum. Porro fugit error sit minus sapiente sit aspernatur</p>
-		</div>
-	  </div>
-
-
-	</div>
-
-  </div>
-</section>
+	</section>
 </body>

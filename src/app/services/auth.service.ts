@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Profesor } from '../dto/Profesor';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class AuthService {
     }
   }
 
-  setIdentity(nuevaidentidad: any){
+  setIdentity(nuevaidentidad: Profesor){
     localStorage.removeItem('identidad_profesor');
     localStorage.setItem('identidad_profesor', JSON.stringify(nuevaidentidad));
   }
