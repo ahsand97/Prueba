@@ -6,9 +6,10 @@
 package co.edu.utp.isc.gia.PruebaBackend.data.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -35,6 +36,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "tipo_pregunta", discriminatorType = DiscriminatorType.STRING)
 @Table(name="preguntas")
 public class Pregunta implements Serializable{
     
@@ -43,16 +45,19 @@ public class Pregunta implements Serializable{
     private Long id;
     
     @Column(nullable = false)
+    private Integer numero_pregunta;
+    
+    @Column(nullable = false)
     private String descripcion;
     
     @Column(nullable = true)
     private byte[] imagen;
     
     @Column(nullable = false)
-    private BigDecimal valoracion;
+    private Double valoracion;
     
     @Column(nullable = false)
-    private String dtype;
+    private String tipo_pregunta;
     
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

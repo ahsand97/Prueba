@@ -5,6 +5,7 @@
  */
 package co.edu.utp.isc.gia.PruebaBackend.data.entity;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @PrimaryKeyJoinColumn(referencedColumnName = "id")
+@DiscriminatorValue("respuesta_abierta")
 @Table(name = "preguntas_respuesta_abierta")
 public class PreguntaRespuestaAbierta extends Pregunta {
 }

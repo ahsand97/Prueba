@@ -6,7 +6,6 @@
 package co.edu.utp.isc.gia.PruebaBackend.web.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,7 @@ public class PreguntaDTO implements Serializable {
     private Long id;
     private String descripcion;
     private byte[] imagen;
-    private BigDecimal valoracion;
+    private Double valoracion;
     private String dtype;
     private ExamenDTO examen;
     

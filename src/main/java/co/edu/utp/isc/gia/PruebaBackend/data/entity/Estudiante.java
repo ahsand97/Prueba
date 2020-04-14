@@ -6,7 +6,6 @@
 package co.edu.utp.isc.gia.PruebaBackend.data.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -49,7 +48,7 @@ public class Estudiante implements Serializable {
     private String email;
     
     @Column(nullable = true)
-    private BigDecimal nota;
+    private Double nota;
     
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

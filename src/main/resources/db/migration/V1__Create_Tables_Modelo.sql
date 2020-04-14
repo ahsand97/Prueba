@@ -19,7 +19,7 @@ CREATE TABLE profesores (
 CREATE TABLE examenes (
     id IDENTITY NOT NULL PRIMARY KEY,
     descripcion VARCHAR(255) NOT NULL,
-    nota_maxima DECIMAL NOT NULL,
+    nota_maxima DOUBLE NOT NULL,
     profesor_id BIGINT NOT NULL
 );
 ALTER TABLE examenes ADD FOREIGN KEY (profesor_id) REFERENCES profesores(id) ON DELETE CASCADE;
@@ -29,7 +29,7 @@ CREATE TABLE estudiantes (
     id IDENTITY NOT NULL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    nota DECIMAL,
+    nota DOUBLE,
     examen_id BIGINT NOT NULL
 );
 ALTER TABLE estudiantes ADD FOREIGN KEY (examen_id) REFERENCES examenes(id) ON DELETE CASCADE;
@@ -37,10 +37,11 @@ ALTER TABLE estudiantes ADD FOREIGN KEY (examen_id) REFERENCES examenes(id) ON D
 
 CREATE TABLE preguntas (
     id IDENTITY NOT NULL PRIMARY KEY,
+    numero_pregunta INTEGER NOT NULL,
     descripcion  VARCHAR(255) NOT NULL,
     imagen BINARY DEFAULT NULL,
-    valoracion DECIMAL NOT NULL,
-    dtype VARCHAR(255) NOT NULL,
+    valoracion DOUBLE NOT NULL,
+    tipo_pregunta VARCHAR(255) NOT NULL,
     examen_id BIGINT NOT NULL
 );
 ALTER TABLE preguntas ADD FOREIGN KEY (examen_id) REFERENCES examenes(id) ON DELETE CASCADE;
@@ -48,7 +49,7 @@ ALTER TABLE preguntas ADD FOREIGN KEY (examen_id) REFERENCES examenes(id) ON DEL
 
 CREATE TABLE preguntas_unica_respuesta (
     id BIGINT NOT NULL PRIMARY KEY,
-    opcion_respuesta_id BIGINT NOT NULL
+    opcion_respuesta_id BIGINT
 );
 ALTER TABLE preguntas_unica_respuesta ADD FOREIGN KEY (id) REFERENCES preguntas(id) ON DELETE CASCADE;
 

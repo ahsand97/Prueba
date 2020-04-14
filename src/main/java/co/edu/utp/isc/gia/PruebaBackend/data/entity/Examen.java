@@ -10,7 +10,6 @@ package co.edu.utp.isc.gia.PruebaBackend.data.entity;
  * @author ahsan
  */
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -46,7 +45,7 @@ public class Examen implements Serializable{
     private String descripcion;
     
     @Column(nullable = false)
-    private BigDecimal nota_maxima;
+    private Double nota_maxima;
     
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

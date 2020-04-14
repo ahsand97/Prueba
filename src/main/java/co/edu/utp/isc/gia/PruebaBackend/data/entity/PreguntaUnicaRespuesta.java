@@ -8,6 +8,7 @@ package co.edu.utp.isc.gia.PruebaBackend.data.entity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -22,17 +23,16 @@ import javax.persistence.Table;
  */
 @Entity
 @PrimaryKeyJoinColumn(referencedColumnName = "id")
+@DiscriminatorValue("unica_respuesta")
 @Table(name = "preguntas_unica_respuesta")
 public class PreguntaUnicaRespuesta extends Pregunta {
-    
-    //@OneToMany(fetch = FetchType.LAZY, mappedBy = "preguntaUnicaRespuesta", cascade = CascadeType.ALL, orphanRemoval = true)
-    
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pregunta_unica_respuesta_id")
     private List<Opcion> opciones;
     
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "opcion_respuesta_id", nullable = false)
+    @JoinColumn(name = "opcion_respuesta_id", nullable = true)
     private Opcion opcionRespuesta;
     
     public boolean addOpcion(Opcion opcion) {

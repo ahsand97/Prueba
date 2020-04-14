@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProfesorRepository extends CrudRepository<Profesor, Long>{
     
-    @Query(value="SELECT * FROM profesores WHERE email = :email", nativeQuery=true)
+    @Query(value="SELECT * FROM profesores WHERE email = :email", nativeQuery=true)       
     Profesor findByEmail(@Param("email") String email);
 }

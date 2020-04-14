@@ -8,11 +8,11 @@ package co.edu.utp.isc.gia.PruebaBackend.data.entity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -22,6 +22,7 @@ import javax.persistence.Table;
  */
 @Entity
 @PrimaryKeyJoinColumn(referencedColumnName = "id")
+@DiscriminatorValue("multiples_respuestas")
 @Table(name = "preguntas_multiples_respuestas")
 public class PreguntaMultiplesRespuestas extends Pregunta {
     
@@ -35,7 +36,6 @@ public class PreguntaMultiplesRespuestas extends Pregunta {
         }
         return opciones.add(opcion);
     }
-    
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "respuesta_multiple_id")
