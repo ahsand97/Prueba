@@ -25,6 +25,8 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(30)]]
     });
+    this.email.valueChanges.subscribe(() => this.email.markAsTouched());
+    this.password.valueChanges.subscribe(() => this.password.markAsTouched());
   }
 
   get email() { return this.loginForm.get('email'); }
@@ -49,6 +51,8 @@ export class LoginComponent implements OnInit {
         this.inputPassword.nativeElement.blur();
         formDirective.resetForm();
         this.loginForm.reset();
+        this.email.markAsUntouched();
+        this.password.markAsUntouched();
       }
     });
   }

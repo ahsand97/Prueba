@@ -15,14 +15,16 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { MatdialogComponent } from './components/matdialog/matdialog.component';
 import { MatButtonModule } from '@angular/material/button';
-import { MainComponent } from './components/main/main.component'; 
+import { MainComponent } from './components/main/main.component';
+import { DialogcrearexamenComponent } from './components/dialogcrearexamen/dialogcrearexamen.component'; 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MatdialogComponent,
-    MainComponent
+    MainComponent,
+    DialogcrearexamenComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,32 @@
+<div>
+    <h1 class="centro">Crear Exámen</h1>
+    <img class="center" src="../../../assets/crearExamen.svg">
+    <br>
+    <form [formGroup]="crearExamenForm" #formDirective="ngForm" (ngSubmit)="nothing(formDirective)" autocomplete="off">  
+        <mat-form-field class="fullWidth">
+            <mat-label for="descripcion" class="text-info titleInput">Descripción:</mat-label><br>
+            <textarea class="textAreaInput" matInput type="text" formControlName="descripcion"></textarea>
+            <mat-error *ngIf="(descripcion.dirty || descripcion.touched) && descripcion.invalid && descripcion.errors.required">Escribe un descripcion</mat-error>
+            <mat-error *ngIf="(descripcion.dirty || descripcion.touched) && descripcion.invalid && descripcion.errors.maxlength">La descripción debe contener como máximo 255 caracteres</mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="fullWidth">
+            <mat-label for="nota_maxima" class="text-info titleInput">Nota Máxima:</mat-label><br>
+            <input id="inputNotaMaxima" matInput type="text" formControlName="nota_maxima">
+            <mat-error *ngIf="(nota_maxima.dirty || nota_maxima.touched) && nota_maxima.invalid && nota_maxima.errors.required">Escribe la nota máxima</mat-error>
+            <mat-error *ngIf="(nota_maxima.dirty || nota_maxima.touched) && nota_maxima.invalid && nota_maxima.errors.pattern">Escribe un número válido</mat-error>
+        </mat-form-field>
+        <br>
+        <br>
+        <div id="botonesExamen">
+            <div style="font-weight: bold;">Añadir Pregunta</div>
+            <button mat-icon-button type="button">
+                <img src="../../../assets/addQuestion.svg" style="width: 42px; height: 42px;">
+            </button>
+            <br>
+            <br>
+            <button mat-raised-button id="guardarExamen" [disabled]="(!crearExamenForm.valid || !hayPreguntas)">Guardar</button>
+            <button mat-raised-button id="cancelarExamen" type="button" (click)="cerrarDialogCrearExamen()">Cancelar</button>
+        </div>
+    </form>
+</div>

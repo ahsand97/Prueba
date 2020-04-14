@@ -1,0 +1,67 @@
+img.center{
+    display: block;
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+}
+
+.fullWidth{
+    display: block;
+    margin: 0 auto;
+    width: 70%;
+}
+
+h1.centro{
+    text-align: center;
+    font-weight: bold;
+}
+
+.textAreaInput{
+    resize: none;
+    height: 80px;
+    font-size: 15px;
+}
+
+.titleInput{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#inputNotaMaxima{
+    font-size: 15px;
+    height: 30px;
+}
+
+#botonesExamen{
+    text-align: center;
+}
+
+#guardarExamen:enabled{
+    margin-right: 10px;
+    background-color: limegreen;
+    color: white;
+}
+
+#guardarExamen:enabled:hover{
+    margin-right: 10px;
+    background-color: white;
+    color: limegreen;
+}
+
+#guardarExamen:disabled{
+    margin-right: 10px;
+    background-color: gray;
+    color: white;
+}
+
+#cancelarExamen{
+    margin-left: 10px;
+    background-color: crimson;
+    color: white;
+}
+
+#cancelarExamen:enabled:hover{
+    margin-left: 10px;
+    background-color: white;
+    color: crimson;
+}

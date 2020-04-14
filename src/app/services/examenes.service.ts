@@ -16,6 +16,6 @@ export class ExamenesService {
 
   getExamenes(idProfesor){
     let header = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.get<Examen[]>(this.url + '/profesor/?idProfesor=' + idProfesor, {headers:header});
+    return this.http.get<Examen[]>(this.url + '/examenes?idProfesor=' + idProfesor, {headers:header});
   }
 }

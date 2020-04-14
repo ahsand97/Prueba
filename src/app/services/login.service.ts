@@ -16,6 +16,6 @@ export class LoginService {
 
   login(profesor:{'email':any, 'clave':any}){
     let header = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.post<Profesor>(this.url + '/profesor', profesor, {headers:header});
+    return this.http.post<Profesor>(this.url + '/profesores', profesor, {headers:header});
   }
 }
