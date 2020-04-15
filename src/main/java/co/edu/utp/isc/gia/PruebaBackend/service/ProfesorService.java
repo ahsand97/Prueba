@@ -5,15 +5,9 @@
  */
 package co.edu.utp.isc.gia.PruebaBackend.service;
 
-import co.edu.utp.isc.gia.PruebaBackend.data.entity.Examen;
 import co.edu.utp.isc.gia.PruebaBackend.data.entity.Profesor;
-import co.edu.utp.isc.gia.PruebaBackend.data.repository.ExamenRepository;
-import co.edu.utp.isc.gia.PruebaBackend.data.repository.PreguntaRepository;
 import co.edu.utp.isc.gia.PruebaBackend.data.repository.ProfesorRepository;
-import co.edu.utp.isc.gia.PruebaBackend.web.dto.ExamenDTO;
 import co.edu.utp.isc.gia.PruebaBackend.web.dto.ProfesorDTO;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

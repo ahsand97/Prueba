@@ -33,12 +33,12 @@ public class ExamenController {
     
     @GetMapping()
     public ResponseEntity<?> getExamenes(@RequestParam("idProfesor") String idProfesor){
-        try{
+        if(idProfesor.isBlank() || idProfesor.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        else{
             List<ExamenDTO> resp = examenService.getExamenes(idProfesor);
             return ResponseEntity.status(HttpStatus.OK).body(resp);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

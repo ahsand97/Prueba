@@ -29,7 +29,7 @@ public class ExamenService {
     @Autowired
     private final ExamenMapper examenMapper;
     
-    public List<ExamenDTO> getExamenes(String idProfesor) throws Exception {
+    public List<ExamenDTO> getExamenes(String idProfesor) {
         Iterable<Examen> examenes = examenRepository.findAllExamenesByIdProfesor(idProfesor);
         List<ExamenDTO> resp = new ArrayList<>();
         for(Examen examen : examenes){

@@ -33,7 +33,7 @@ public class ProfesorController {
     
     @PostMapping()
     public ResponseEntity<?> validateProfesor(@RequestBody Map<String, String> profesor){
-        if(profesor.get("email") == null || profesor.get("clave") == null){
+        if((profesor.get("email").isBlank() || profesor.get("email").isEmpty()) || (profesor.get("clave").isBlank() || profesor.get("clave").isEmpty())){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Faltan datos.");
         }
         else{
