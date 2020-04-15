@@ -1,0 +1,126 @@
+<div>
+    <h1 class="centro">Añadir Pregunta</h1>
+    <img class="center" src="../../../assets/question.svg">
+    <br>
+    <mat-label class="text-info titleInput fullWidth">Tipo Pregunta:</mat-label><br>
+    <div class="fullWidth">
+        <mat-radio-group class="centro" [(ngModel)]="tipoPregunta">
+            <mat-radio-button value="1">Pregunta con respuesta abierta</mat-radio-button><br>
+            <mat-radio-button value="2">Pregunta con múltiples opciones y única respuesta</mat-radio-button><br>
+            <mat-radio-button value="3">Pregunta con múltiples opciones y múltiples respuestas</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <ng-template [ngIf]="tipoPregunta">
+        <form [formGroup]="addQuestionForm" #formDirective="ngForm" (ngSubmit)="uploadQuestion()" autocomplete="off">
+            <mat-form-field class="fullWidth">
+                <mat-label for="descripcion" class="text-info titleInput">Descripción:</mat-label><br>
+                <textarea class="textAreaInput" matInput type="text" formControlName="descripcion"></textarea>
+                <mat-error *ngIf="(descripcion.dirty || descripcion.touched) && descripcion.invalid && descripcion.errors.required">Escribe una descripcion</mat-error>
+                <mat-error *ngIf="(descripcion.dirty || descripcion.touched) && descripcion.invalid && descripcion.errors.maxlength">La descripción debe contener como máximo 255 caracteres</mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field class="fullWidth">
+                <mat-label for="valoracion" class="text-info titleInput">Valoración:</mat-label><br>
+                <input id="inputValoracion" matInput type="text" formControlName="valoracion">
+                <mat-error *ngIf="(valoracion.dirty || valoracion.touched) && valoracion.invalid && valoracion.errors.required">Escribe la valoración de la pregunta</mat-error>
+                <mat-error *ngIf="(valoracion.dirty || valoracion.touched) && valoracion.invalid && valoracion.errors.pattern">Escribe un número válido</mat-error>
+            </mat-form-field>
+            <br>
+            <mat-label for="imagen" class="text-info titleInput fullWidth">Imagen (Opcional):</mat-label><br>
+            <label for="imagen" type="button" class="btn btn-outline-primary" style="margin: 0 auto; margin-left: 15%;">Seleccionar Imagen</label>
+            <input id="imagen" class="fullWidth" type="file" accept="image/*" style="display: none;" (change)="uploadImage($event)">
+            <span *ngIf="hayImagen; else elseBlock" class="fullWidth" style="font-weight: bold;">{{imagen.value.name}}</span>
+            <ng-template #elseBlock>
+                <span style="font-weight: bold; margin-left: 5px;">No se ha seleccionado ninguna imagen</span>
+            </ng-template>
+            <br>
+            <br>
+            <ng-container [ngSwitch]="tipoPregunta">
+                <ng-container *ngSwitchCase="'1'">
+                    <div id="botonesPregunta">
+                        <button mat-raised-button id="guardarPregunta" [disabled]="!addQuestionForm.valid">Guardar</button>
+                        <button mat-raised-button id="cancelarPregunta" type="button" (click)="cerrarDialogCrearPregunta()">Cancelar</button>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="'2'">
+                    <form [formGroup]="addOptionForm" #formDirective="ngForm" (ngSubmit)="addOption(formDirective)" autocomplete="off">
+                        <h1 class="centro">Opciones</h1>
+                        <ng-container *ngFor="let opcionElement of Opciones">
+                            <div class="fullWidth">
+                                <h3 style="display: inline-block;font-weight: bold; margin-bottom: -20px;">{{opcionElement.letra}}.
+                                    <h3 style="display: inline-block;">{{opcionElement.opcion}}</h3>
+                                </h3>
+                            </div>
+                        </ng-container>
+                        <div style="text-align: center;">
+                            <h3 style="display: inline-block; margin-right: 5px; font-weight: bold;">{{letraActual}}</h3>
+                            <mat-form-field class="fullWidth" style="display: inline-block; margin-right: 5px;">
+                                <input #inPutAddOption matInput type="text" formControlName="opcion" style="font-size: 15px;">
+                                <mat-error *ngIf="(opcion.dirty || opcion.touched) && opcion.invalid && opcion.errors.maxlength">La opción debe contener como máximo 255 caracteres</mat-error>
+                            </mat-form-field>
+                            <button id="botonAddOpcion" class="btn" [disabled]="(!hayAlgoEscritoenInputAddOpcion || !addOptionForm.valid || limiteDeOpciones)">Añadir</button>
+                            <div *ngIf="limiteDeOpciones" class="fullWidth" style="color: red; font-weight: bold;">Se ha llegado al límite de opciones</div>
+                            <div class="fullWidth">
+                                <button id="botonEliminarUltimaOpcion" class="btn" (click)="deleteOption()" type="button" [disabled]="Opciones.length === 0">Eliminar última opción</button>
+                            </div>
+                        </div>
+                    </form>
+                    <ng-template [ngIf]="Opciones.length > 0">
+                        <mat-label class="text-info titleInput fullWidth">Respuesta:</mat-label><br>
+                        <div class="fullWidth">
+                            <mat-radio-group class="centro" [(ngModel)]="respuesta" [ngModelOptions]="{standalone: true}">
+                                <ng-container *ngFor="let opcionElement of Opciones">
+                                    <mat-radio-button [value]="opcionElement.letra">{{opcionElement.letra}}</mat-radio-button><br>
+                                </ng-container>
+                            </mat-radio-group>
+                        </div>
+                    </ng-template>
+                    <br>
+                    <br>
+                    <div id="botonesPregunta">
+                        <button mat-raised-button id="guardarPregunta" [disabled]="(!addQuestionForm.valid || respuesta.length === 0 || Opciones.length === 0)">Guardar</button>
+                        <button mat-raised-button id="cancelarPregunta" type="button" (click)="cerrarDialogCrearPregunta()">Cancelar</button>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchCase="'3'">
+                    <form [formGroup]="addOptionForm" #formDirective="ngForm" (ngSubmit)="addOption(formDirective)" autocomplete="off">
+                        <h1 class="centro">Opciones</h1>
+                        <ng-container *ngFor="let opcionElement of Opciones">
+                            <div class="fullWidth">
+                                <h3 style="display: inline-block;font-weight: bold; margin-bottom: -20px;">{{opcionElement.letra}}.
+                                    <h3 style="display: inline-block;">{{opcionElement.opcion}}</h3>
+                                </h3>
+                            </div>
+                        </ng-container>
+                        <div style="text-align: center;">
+                            <h3 style="display: inline-block; margin-right: 5px; font-weight: bold;">{{letraActual}}</h3>
+                            <mat-form-field class="fullWidth" style="display: inline-block; margin-right: 5px;">
+                                <input #inPutAddOption matInput type="text" formControlName="opcion" style="font-size: 15px;">
+                                <mat-error *ngIf="(opcion.dirty || opcion.touched) && opcion.invalid && opcion.errors.maxlength">La opción debe contener como máximo 255 caracteres</mat-error>
+                            </mat-form-field>
+                            <button id="botonAddOpcion" class="btn" [disabled]="(!hayAlgoEscritoenInputAddOpcion || !addOptionForm.valid || limiteDeOpciones)">Añadir</button>
+                            <div *ngIf="limiteDeOpciones" class="fullWidth" style="color: red; font-weight: bold;">Se ha llegado al límite de opciones</div>
+                            <div class="fullWidth">
+                                <button id="botonEliminarUltimaOpcion" class="btn" (click)="deleteOption()" type="button" [disabled]="Opciones.length === 0">Eliminar última opción</button>
+                            </div>
+                        </div>
+                    </form>
+                    <ng-template [ngIf]="Opciones.length > 0">
+                        <mat-label class="text-info titleInput fullWidth">Respuestas:</mat-label><br>
+                        <div class="fullWidth">
+                                <ng-container *ngFor="let opcionElement of respuestas;">
+                                    <mat-checkbox style="font-weight: bold;" [name]="opcionElement.letra" [(ngModel)]="opcionElement.checked" (ngModelChange)="clickCheckBox()" [ngModelOptions]="{standalone: true}">{{opcionElement.letra}}</mat-checkbox><br>
+                                </ng-container>
+                        </div>
+                    </ng-template>
+                    <br>
+                    <br>
+                    <div id="botonesPregunta">
+                        <button mat-raised-button id="guardarPregunta" [disabled]="(!addQuestionForm.valid || !hayRespuestas || Opciones.length === 0)">Guardar</button>
+                        <button mat-raised-button id="cancelarPregunta" type="button" (click)="cerrarDialogCrearPregunta()">Cancelar</button>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </form>
+    </ng-template>
+</div>

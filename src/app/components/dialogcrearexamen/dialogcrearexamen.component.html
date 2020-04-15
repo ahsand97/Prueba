@@ -6,7 +6,7 @@
         <mat-form-field class="fullWidth">
             <mat-label for="descripcion" class="text-info titleInput">Descripción:</mat-label><br>
             <textarea class="textAreaInput" matInput type="text" formControlName="descripcion"></textarea>
-            <mat-error *ngIf="(descripcion.dirty || descripcion.touched) && descripcion.invalid && descripcion.errors.required">Escribe un descripcion</mat-error>
+            <mat-error *ngIf="(descripcion.dirty || descripcion.touched) && descripcion.invalid && descripcion.errors.required">Escribe una descripcion</mat-error>
             <mat-error *ngIf="(descripcion.dirty || descripcion.touched) && descripcion.invalid && descripcion.errors.maxlength">La descripción debe contener como máximo 255 caracteres</mat-error>
         </mat-form-field>
         <br>
@@ -16,16 +16,41 @@
             <mat-error *ngIf="(nota_maxima.dirty || nota_maxima.touched) && nota_maxima.invalid && nota_maxima.errors.required">Escribe la nota máxima</mat-error>
             <mat-error *ngIf="(nota_maxima.dirty || nota_maxima.touched) && nota_maxima.invalid && nota_maxima.errors.pattern">Escribe un número válido</mat-error>
         </mat-form-field>
-        <br>
+        <h1 class="centro">Preguntas</h1>
+        <ng-container *ngFor="let preguntaElement of preguntas">
+            <div class="fullWidth">
+                <h3 style="display: inline-block;font-weight: bold; margin-bottom: -20px;">{{preguntaElement.numero}}. Tipo:
+                    <h3 style="display: inline-block;">{{preguntaElement.tipoExplicito}}</h3>
+                </h3>
+                <br>
+                <h3 style="display: inline-block;font-weight: bold; margin-bottom: -20px;">&nbsp;&nbsp;&nbsp;&nbsp;Descripción:
+                    <h3 style="display: inline-block;">{{preguntaElement.descripcion}}</h3>
+                </h3>
+                <br>
+                <h3 style="display: inline-block;font-weight: bold; margin-bottom: -20px;">&nbsp;&nbsp;&nbsp;&nbsp;Valoración:
+                    <h3 style="display: inline-block;">{{preguntaElement.valoracion}}</h3>
+                </h3>
+                <br>
+                <h3 *ngIf="preguntaElement.urlImagen" style="display: inline-block;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;Imagen:
+                    <img [src]="preguntaElement.urlImagen" style="display: inline-block; max-width: 256px; max-height: 256px;">
+                </h3>
+                <br>
+            </div>
+        </ng-container>
         <br>
         <div id="botonesExamen">
             <div style="font-weight: bold;">Añadir Pregunta</div>
-            <button mat-icon-button type="button">
+            <button mat-icon-button type="button" (click)="createQuestion()">
                 <img src="../../../assets/addQuestion.svg" style="width: 42px; height: 42px;">
             </button>
             <br>
             <br>
-            <button mat-raised-button id="guardarExamen" [disabled]="(!crearExamenForm.valid || !hayPreguntas)">Guardar</button>
+            <div class="fullWidth">
+                <button id="botonEliminarUltimaPregunta" class="btn" type="button" (click)="eliminarPregunta()" [disabled]="preguntas.length === 0">Eliminar última pregunta</button>
+            </div>
+            <br>
+            <br>
+            <button mat-raised-button id="guardarExamen" [disabled]="(!crearExamenForm.valid || preguntas.length === 0)">Guardar</button>
             <button mat-raised-button id="cancelarExamen" type="button" (click)="cerrarDialogCrearExamen()">Cancelar</button>
         </div>
     </form>

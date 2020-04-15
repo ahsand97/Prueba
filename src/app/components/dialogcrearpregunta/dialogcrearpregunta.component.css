@@ -11,15 +11,9 @@ img.center{
     width: 70%;
 }
 
-h1.centro{
+.centro{
     text-align: center;
     font-weight: bold;
-}
-
-.textAreaInput{
-    resize: none;
-    height: 80px;
-    font-size: 15px;
 }
 
 .titleInput{
@@ -27,55 +21,71 @@ h1.centro{
     font-size: 20px;
 }
 
-#inputNotaMaxima{
+.textAreaInput{
+    resize: none;
+    height: 60px;
+    font-size: 15px;
+}
+
+#inputValoracion{
     font-size: 15px;
     height: 30px;
 }
 
-#botonesExamen{
+#botonesPregunta{
     text-align: center;
 }
 
-#guardarExamen:enabled{
+#guardarPregunta:enabled{
     margin-right: 10px;
     background-color: limegreen;
     color: white;
 }
 
-#guardarExamen:enabled:hover{
+#guardarPregunta:enabled:hover{
     margin-right: 10px;
     background-color: white;
     color: limegreen;
 }
 
-#guardarExamen:disabled{
+#guardarPregunta:disabled{
     margin-right: 10px;
     background-color: gray;
     color: white;
 }
 
-#cancelarExamen{
+#cancelarPregunta{
     margin-left: 10px;
     background-color: crimson;
     color: white;
 }
 
-#cancelarExamen:enabled:hover{
+#cancelarPregunta:enabled:hover{
     margin-left: 10px;
     background-color: white;
     color: crimson;
 }
 
-#botonEliminarUltimaPregunta{
+#botonAddOpcion, #botonEliminarUltimaOpcion{
     font-size: 12px;
 }
 
-#botonEliminarUltimaPregunta:disabled{
+#botonAddOpcion:disabled{
     color: white;
     background-color: gray;
 }
 
-#botonEliminarUltimaPregunta:enabled{
+#botonAddOpcion:enabled{
+    color: white;
+    background-color: seagreen;
+}
+
+#botonEliminarUltimaOpcion:disabled{
+    color: white;
+    background-color: gray;
+}
+
+#botonEliminarUltimaOpcion:enabled{
     color:white;
     background-color: tomato;
 }

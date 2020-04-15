@@ -13,6 +13,7 @@ import { DialogcrearexamenComponent } from '../dialogcrearexamen/dialogcrearexam
 })
 export class MainComponent implements OnInit {
   identity:any;
+
   urlImagenEditar:string = '../../../assets/editarexamen.svg';
   urlImagenBorrar:string = '../../../assets/borrarExamen.svg';
   urlImagenGenerarLink:string = '../../../assets/generarLink.svg';
@@ -22,6 +23,7 @@ export class MainComponent implements OnInit {
   urlImagenGenerarLinkHover:string = '../../../assets/generarLinkHover.svg';
   urlImagenVerHover:string = '../../../assets/verExamenHover.svg';
   examenesImagenesList = [];
+  
   dialogoCrearExamenAbierto:boolean = false;
   heightDialog:number;
   witdhDialog:string;
