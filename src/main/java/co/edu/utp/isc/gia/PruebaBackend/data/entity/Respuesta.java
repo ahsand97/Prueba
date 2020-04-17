@@ -45,12 +45,12 @@ public class Respuesta implements Serializable{
     private Long id;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pregunta_id", nullable = false)
     private Pregunta pregunta;
     
     @ToString.Exclude
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "opciones_respuestas",
     joinColumns=@JoinColumn(name="respuesta_id"),
     inverseJoinColumns=@JoinColumn(name="opcion_id"))

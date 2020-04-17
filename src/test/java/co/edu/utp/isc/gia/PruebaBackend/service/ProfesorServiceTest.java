@@ -82,7 +82,7 @@ public class ProfesorServiceTest {
         ProfesorService instance = new ProfesorService(profesorRepository, profesorMapper);
         
         //Expected
-        Exception assertThrows = assertThrows(Exception.class, () -> {
+        assertThrows(Exception.class, () -> {
             instance.validate(input);
         });
     }
@@ -100,7 +100,7 @@ public class ProfesorServiceTest {
         ProfesorService instance = new ProfesorService(profesorRepository, profesorMapper);
         
         //Expected
-        Exception assertThrows = assertThrows(Exception.class, () -> {
+        assertThrows(Exception.class, () -> {
             instance.validate(input);
         });
     }
@@ -116,7 +116,7 @@ public class ProfesorServiceTest {
         //Expected exception
         //Test
         //Validation
-        Exception assertThrows = assertThrows(Exception.class, () -> {
+        assertThrows(Exception.class, () -> {
             ProfesorDTO result = instance.validate(input);
         });
     }

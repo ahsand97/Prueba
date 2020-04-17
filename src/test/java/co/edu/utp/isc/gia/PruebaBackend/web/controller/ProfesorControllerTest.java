@@ -9,7 +9,6 @@ import co.edu.utp.isc.gia.PruebaBackend.service.ProfesorService;
 import co.edu.utp.isc.gia.PruebaBackend.web.dto.ProfesorDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import org.json.JSONObject;

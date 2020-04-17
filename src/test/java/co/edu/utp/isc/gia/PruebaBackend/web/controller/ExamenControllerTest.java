@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -83,4 +84,38 @@ public class ExamenControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/examenes").param("idProfesor", ""))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
     }
+    
+    @Test
+    public void testAddExamenBodyOkExpOk() throws Exception {
+        ExamenDTO expectedFromService = new ExamenDTO(1L, "Exámen prueba 1", 5.0, null, 1L);
+        given(examenService.addExamen(any(ExamenDTO.class))).willReturn(expectedFromService);
+        
+        ExamenDTO inputToAPI = new ExamenDTO(null, "Exámen Prueba 1", 5.0, 10, 1L);
+        
+       
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/examenes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(inputToAPI)))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+        
+        ExamenDTO resultFromController = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), new TypeReference<ExamenDTO>() {});
+        
+        assertEquals(expectedFromService.getId(), resultFromController.getId());
+        assertEquals(expectedFromService.getDescripcion(), resultFromController.getDescripcion());
+        assertEquals(expectedFromService.getNota_maxima(), resultFromController.getNota_maxima());
+        assertEquals(expectedFromService.getProfesor_id(), resultFromController.getProfesor_id());
+    }
+    
+    @Test
+    public void testAddExamenBadBodyExpException() throws Exception {
+        given(examenService.addExamen(any(ExamenDTO.class))).willThrow(new Exception());
+        
+        ExamenDTO inputToAPI = new ExamenDTO(null, "Exámen Prueba 1", 5.0, 10, 1L);
+        
+        mockMvc.perform(MockMvcRequestBuilders.post("/examenes")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(inputToAPI)))
+            .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
+    }
+    
 }

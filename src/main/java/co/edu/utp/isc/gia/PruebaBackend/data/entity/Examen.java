@@ -10,7 +10,6 @@ package co.edu.utp.isc.gia.PruebaBackend.data.entity;
  * @author ahsan
  */
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,17 +47,17 @@ public class Examen implements Serializable{
     private Double nota_maxima;
     
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profesor_id", nullable = false)
     private Profesor profesor;
     
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "examen", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pregunta> preguntas;
-    
+    /*
     public boolean addPregunta(Pregunta pregunta) {
         if(preguntas == null){
             preguntas = new ArrayList<>();
         }
         return preguntas.add(pregunta);
-    }
+    }*/
 }

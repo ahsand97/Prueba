@@ -22,7 +22,7 @@ CREATE TABLE examenes (
     nota_maxima DOUBLE NOT NULL,
     profesor_id BIGINT NOT NULL
 );
-ALTER TABLE examenes ADD FOREIGN KEY (profesor_id) REFERENCES profesores(id) ON DELETE CASCADE;
+ALTER TABLE examenes ADD FOREIGN KEY (profesor_id) REFERENCES profesores(id);
 
 
 CREATE TABLE estudiantes (

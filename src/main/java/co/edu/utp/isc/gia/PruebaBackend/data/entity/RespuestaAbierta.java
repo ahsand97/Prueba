@@ -29,7 +29,7 @@ public class RespuestaAbierta extends Respuesta {
     private String respuesta;
     
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pregunta_id", nullable = false)
     private PreguntaRespuestaAbierta preguntaRespuestaAbierta;
 }

@@ -15,12 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import lombok.Getter;
 
 /**
  *
  * @author ahsan
  */
 @Entity
+@Getter
 @PrimaryKeyJoinColumn(referencedColumnName = "id")
 @DiscriminatorValue("multiples_respuestas")
 @Table(name = "preguntas_multiples_respuestas")

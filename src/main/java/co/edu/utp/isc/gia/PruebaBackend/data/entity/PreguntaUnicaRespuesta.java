@@ -16,12 +16,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author ahsan
  */
 @Entity
+@Getter
+@Setter
 @PrimaryKeyJoinColumn(referencedColumnName = "id")
 @DiscriminatorValue("unica_respuesta")
 @Table(name = "preguntas_unica_respuesta")

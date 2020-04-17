@@ -6,16 +6,20 @@
 package co.edu.utp.isc.gia.PruebaBackend.service;
 
 import co.edu.utp.isc.gia.PruebaBackend.data.entity.Examen;
+import co.edu.utp.isc.gia.PruebaBackend.data.entity.Profesor;
 import co.edu.utp.isc.gia.PruebaBackend.data.repository.ExamenRepository;
 import co.edu.utp.isc.gia.PruebaBackend.data.repository.PreguntaRepository;
+import co.edu.utp.isc.gia.PruebaBackend.data.repository.ProfesorRepository;
 import co.edu.utp.isc.gia.PruebaBackend.web.dto.ExamenDTO;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,6 +49,9 @@ public class ExamenServiceTest {
     @Mock
     private PreguntaRepository preguntaRepository;
     
+    @Mock
+    private ProfesorRepository profesorRepository;
+    
     @BeforeEach
     public void setUp(){
         MockitoAnnotations.initMocks(this);
@@ -71,7 +78,7 @@ public class ExamenServiceTest {
         String idProfesor = "1";
         
         //Target
-        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, examenMapper);
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
         
         //Expected
         Iterable<Examen> expResult = () -> {
@@ -100,7 +107,7 @@ public class ExamenServiceTest {
         String input = null;
        
         //Target
-        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, examenMapper);
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
         try {
             //Expected exception
             //Test
@@ -109,6 +116,60 @@ public class ExamenServiceTest {
         } catch (Exception ex) {
             Logger.getLogger(ProfesorServiceTest.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    @Test
+    public void testAddExamen_BodyOkResultOk() throws Exception{
+        Examen expectedFromDB = new Examen(1L, "Exámen prueba 1", 5.0, null, null);
+        Optional<Profesor> profesorExpectedFromDB = Optional.of(new Profesor(1L, "Cesar Augusto Díaz", "black@utp.edu.co", "1234", null));
+        when(examenRepository.save(any(Examen.class))).thenReturn(expectedFromDB);
+        when(profesorRepository.findById(any(Long.class))).thenReturn(profesorExpectedFromDB);
+        
+        //Input
+        ExamenDTO examenDTOtoInput = new ExamenDTO(null, "Exámen prueba 1", 5.0, 10, 1L);
+        
+        //Target
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
+        
+        //Expected
+        ExamenDTO expResult = new ExamenDTO(1L, "Exámen prueba 1", 5.0, null, 1L);
+        
+        //Test
+        ExamenDTO result = instance.addExamen(examenDTOtoInput);
+        
+        //Validation
+        assertEquals(expResult.getId(), result.getId());
+        assertEquals(expResult.getDescripcion(), result.getDescripcion());
+        assertEquals(expResult.getNota_maxima(), result.getNota_maxima());
+        assertEquals(expResult.getProfesor_id(), result.getProfesor_id());
+    }
+    
+    @Test
+    public void testAddExamen_BodyNullResultException(){
+        //Input
+        ExamenDTO input = new ExamenDTO();
+       
+        //Target
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
+        
+        //Expected exception
+        assertThrows(Exception.class, () -> {
+            instance.addExamen(input);
+        });
+    }
+    
+    @Test
+    public void testAddExamen_BodyEmptyResultException(){
+        //Input
+        ExamenDTO input = new ExamenDTO(null, "", 1.2, null, 1L);
+       
+        //Target
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
+        
+        //Expected exception
+        assertThrows(Exception.class, () -> {
+            instance.addExamen(input);
+        });
     }
     
 }

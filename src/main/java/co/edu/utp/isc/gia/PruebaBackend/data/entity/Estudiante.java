@@ -6,7 +6,6 @@
 package co.edu.utp.isc.gia.PruebaBackend.data.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,18 +50,18 @@ public class Estudiante implements Serializable {
     private Double nota;
     
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "examen_id", nullable = false)
     private Examen examen;
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="estudiante_id")
     List<Respuesta> respuestas;
-    
+    /*
     public boolean addRespuesta(Respuesta respuesta) {
         if(respuestas == null){
             respuestas = new ArrayList<>();
         }
         return respuestas.add(respuesta);
-    }
+    }*/
 }

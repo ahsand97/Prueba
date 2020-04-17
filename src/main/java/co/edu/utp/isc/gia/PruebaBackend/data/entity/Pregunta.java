@@ -56,11 +56,8 @@ public class Pregunta implements Serializable{
     @Column(nullable = false)
     private Double valoracion;
     
-    @Column(nullable = false)
-    private String tipo_pregunta;
-    
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "examen_id", nullable = false)
     private Examen examen;
     

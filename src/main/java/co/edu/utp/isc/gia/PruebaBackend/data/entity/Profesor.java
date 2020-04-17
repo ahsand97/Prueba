@@ -10,7 +10,6 @@ package co.edu.utp.isc.gia.PruebaBackend.data.entity;
  * @author ahsan
  */
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,11 +47,11 @@ public class Profesor implements Serializable{
     
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Examen> examenes;
-    
+    /*
     public boolean addExamen(Examen examen) {
         if(examenes == null){
             examenes = new ArrayList<>();
         }
         return examenes.add(examen);
-    }
+    }*/
 }

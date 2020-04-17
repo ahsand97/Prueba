@@ -19,14 +19,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PreguntaDTO implements Serializable {
+public class OpcionDTO implements Serializable {
     
     private Long id;
-    private Integer numero_pregunta;
+    private String letra;
     private String descripcion;
-    private byte[] imagen;
-    private Double valoracion;
-    private String dtype;
+    private Integer numeroPregunta;
+    private String tipo_pregunta;
     private Long examen_id;
-    
 }
