@@ -1,6 +1,9 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ComunicacionService } from 'src/app/services/comunicacion.service';
+
 
 @Component({
   selector: 'app-dialogcrearpregunta',
@@ -12,7 +15,7 @@ export class DialogcrearpreguntaComponent implements OnInit {
   addOptionForm:FormGroup;
   tipoPregunta:string;
   respuesta:string = '';
-  hayImagen:boolean = false;
+  urlImagen:any;
   hayRespuestas:boolean = false;
   respuestas:any[] = [];
   hayAlgoEscritoenInputAddOpcion:boolean = false;
@@ -23,7 +26,11 @@ export class DialogcrearpreguntaComponent implements OnInit {
   Opciones:any[] = [];
   @ViewChild('inPutAddOption') inputAddOption: ElementRef;
 
-  constructor(private dialogRef:MatDialogRef<DialogcrearpreguntaComponent>, private formBuilder:FormBuilder) { }
+  constructor(private dialogRef:MatDialogRef<DialogcrearpreguntaComponent>, private formBuilder:FormBuilder, private domSanitizer:DomSanitizer, private comunicacionService:ComunicacionService) { 
+    this.comunicacionService.emitter.subscribe(() => {
+      this.dialogRef.close();
+    });
+  }
 
   ngOnInit(): void {
     let numericNumberReg= '^-?[0-9]\\d*(\\.\\d+)?$';
@@ -88,13 +95,19 @@ export class DialogcrearpreguntaComponent implements OnInit {
       });
     }
     else{
+      let respuestas = [];
+      this.respuestas.forEach(element =>{
+        if(element.checked == true){
+          respuestas.push(element);
+        }
+      });
       this.dialogRef.close({'tipo': this.tipoPregunta,
       'tipoExplicito': 'Pregunta con múltiples opciones y múltiples respuestas',
       'descripcion': this.descripcion.value, 
       'valoracion': this.valoracion.value, 
       'imagen': this.imagen.value,
       'opciones': this.Opciones,
-      'respuestas': this.respuestas
+      'respuestas': respuestas
       });
     }
     
@@ -162,9 +175,14 @@ export class DialogcrearpreguntaComponent implements OnInit {
 
   uploadImage(event){
     if (event.target.files.length && event.target.files[0]) {
-      this.hayImagen = true;
       let file = event.target.files[0];
       this.imagen.patchValue(file);
+
+      let reader = new FileReader();
+      reader.readAsDataURL(this.imagen.value);
+      reader.onload = (e) => {
+        this.urlImagen = this.domSanitizer.bypassSecurityTrustUrl(String(reader.result));
+      }
     }
   }
 

@@ -19,7 +19,8 @@ import { MatdialogComponent } from './components/matdialog/matdialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MainComponent } from './components/main/main.component';
 import { DialogcrearexamenComponent } from './components/dialogcrearexamen/dialogcrearexamen.component';
-import { DialogcrearpreguntaComponent } from './components/dialogcrearpregunta/dialogcrearpregunta.component'; 
+import { DialogcrearpreguntaComponent } from './components/dialogcrearpregunta/dialogcrearpregunta.component';
+import { VerexamenComponent } from './components/verexamen/verexamen.component'; 
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { DialogcrearpreguntaComponent } from './components/dialogcrearpregunta/d
     MatdialogComponent,
     MainComponent,
     DialogcrearexamenComponent,
-    DialogcrearpreguntaComponent
+    DialogcrearpreguntaComponent,
+    VerexamenComponent
   ],
   imports: [
     BrowserModule,

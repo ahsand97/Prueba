@@ -6,7 +6,7 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" [routerLink]="">
+					<a class="nav-link">
 						<img src="../../../assets/idea-principal.svg" style="width: 48px; height: 48px; padding-bottom: 5px;">
 						<h1 style="display: inline-block; font-weight: bold;">Principal</h1>
 					</a>
@@ -69,7 +69,7 @@
 								<p style="font-weight:normal; font-size: 18px; display: inline-block; max-width: 100%; text-overflow: clip;">{{examen.examen.nota_maxima}}</p>
 							</h2>
 							<div style="text-align: left; margin-top: 20px; margin-bottom: -60px;">
-								<button  mat-icon-button style="color:brown;">
+								<button  mat-icon-button style="color:brown;" (click)="verExamen(examen.examen.id, i)">
 									<img src={{examen.imagenes.ver}} style="width: 32px; height: 32px;">
 									Ver
 								</button>
@@ -82,10 +82,10 @@
 								<br>-->
 								<button mat-icon-button style="color:teal;">
 									<img src={{examen.imagenes.link}} style="width: 32px; height: 32px;">
-									Generar link para realizar exámen
+									Generar link para realizar examen
 								</button>
 								<br>
-								<button mat-icon-button color="warn">
+								<button mat-icon-button color="warn" (click)="deleteExamen(examen.examen.id, i)">
 									<img src={{examen.imagenes.borrar}} style="width: 32px; height: 32px;">
 									Borrar
 								</button>

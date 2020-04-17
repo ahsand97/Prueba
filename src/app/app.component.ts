@@ -4,6 +4,7 @@ import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import { MatdialogComponent } from './components/matdialog/matdialog.component';
+import { ComunicacionService } from './services/comunicacion.service';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,7 @@ export class AppComponent implements OnInit {
   identity:any = null;
   dialogoAbierto:boolean = null;
 
-
-  constructor(private userIdle:UserIdleService, private authServie:AuthService, private router:Router, private dialog:MatDialog) { }
+  constructor(private userIdle:UserIdleService, private authServie:AuthService, private router:Router, private dialog:MatDialog, private comunicacionService:ComunicacionService) { }
 
   ngOnInit(){
     this.identity = this.authServie.getIdentity();
@@ -45,6 +45,7 @@ export class AppComponent implements OnInit {
     this.userIdle.stopTimer();
     if(this.inactivo == true){
       this.authServie.logOut();
+      this.comunicacionService.emitirData("Session Expired");
       this.openDialog();
     }
   }

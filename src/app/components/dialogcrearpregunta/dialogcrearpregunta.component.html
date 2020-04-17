@@ -28,8 +28,9 @@
             <br>
             <mat-label for="imagen" class="text-info titleInput fullWidth">Imagen (Opcional):</mat-label><br>
             <label for="imagen" type="button" class="btn btn-outline-primary" style="margin: 0 auto; margin-left: 15%;">Seleccionar Imagen</label>
-            <input id="imagen" class="fullWidth" type="file" accept="image/*" style="display: none;" (change)="uploadImage($event)">
-            <span *ngIf="hayImagen; else elseBlock" class="fullWidth" style="font-weight: bold;">{{imagen.value.name}}</span>
+            <input id="imagen" class="fullWidth" type="file" accept="image/x-png,image/gif,image/jpeg" style="display: none;" (change)="uploadImage($event)">
+            <span *ngIf="urlImagen; else elseBlock" class="fullWidth" style="font-weight: bold;">{{imagen.value.name}}</span>
+            <img [src]="urlImagen" *ngIf="urlImagen" class="fullWidth" style="max-width: 256px; max-height: 256px;">
             <ng-template #elseBlock>
                 <span style="font-weight: bold; margin-left: 5px;">No se ha seleccionado ninguna imagen</span>
             </ng-template>
@@ -87,9 +88,8 @@
                         <h1 class="centro">Opciones</h1>
                         <ng-container *ngFor="let opcionElement of Opciones">
                             <div class="fullWidth">
-                                <h3 style="display: inline-block;font-weight: bold; margin-bottom: -20px;">{{opcionElement.letra}}.
-                                    <h3 style="display: inline-block;">{{opcionElement.opcion}}</h3>
-                                </h3>
+                                <h3 style="display: inline-block;font-weight: bold; margin: 0;">{{opcionElement.letra}}.&nbsp;</h3>
+                                <h3 style="display: inline-block; margin: 0;">{{opcionElement.opcion}}</h3>
                             </div>
                         </ng-container>
                         <div style="text-align: center;">

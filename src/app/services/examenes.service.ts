@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Profesor } from '../dto/Profesor';
 import { Examen } from '../dto/Examen';
 
 @Injectable({
@@ -17,5 +16,18 @@ export class ExamenesService {
   getExamenes(idProfesor){
     let header = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.get<Examen[]>(this.url + '/examenes?idProfesor=' + idProfesor, {headers:header});
+  }
+
+  addExamen(examen:Examen){
+    let header = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post<Examen>(this.url + '/examenes', examen, {headers:header});
+  }
+
+  deleteExamen(idExamen){
+    return this.http.delete<Examen>(this.url + '/examenes?id=' + idExamen);
+  }
+
+  getExamen(idExamen){
+    return this.http.get<Examen>(this.url + '/examenes/examen?id=' + idExamen);
   }
 }

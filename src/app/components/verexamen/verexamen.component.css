@@ -1,0 +1,25 @@
+.fullWidth{
+    display: block;
+    margin: 0 auto;
+    width: 70%;
+}
+
+.centro{
+    text-align: center;
+    font-weight: bold;
+}
+
+.titleInput{
+    font-weight: bold;
+    font-size: 23px;
+}
+
+#cerrarDialog{
+    background-color: crimson;
+    color: white;
+}
+
+#cerrarDialog:enabled:hover{
+    background-color: white;
+    color: crimson;
+}

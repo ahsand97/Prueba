@@ -1,8 +1,8 @@
 <div>
-    <h1 class="centro">Crear Exámen</h1>
+    <h1 class="centro">Crear Examen</h1>
     <img class="center" src="../../../assets/crearExamen.svg">
     <br>
-    <form [formGroup]="crearExamenForm" #formDirective="ngForm" (ngSubmit)="nothing(formDirective)" autocomplete="off">  
+    <form [formGroup]="crearExamenForm" #formDirective="ngForm" (ngSubmit)="crearExamen()" autocomplete="off">  
         <mat-form-field class="fullWidth">
             <mat-label for="descripcion" class="text-info titleInput">Descripción:</mat-label><br>
             <textarea class="textAreaInput" matInput type="text" formControlName="descripcion"></textarea>
@@ -19,23 +19,63 @@
         <h1 class="centro">Preguntas</h1>
         <ng-container *ngFor="let preguntaElement of preguntas">
             <div class="fullWidth">
-                <h3 style="display: inline-block;font-weight: bold; margin-bottom: -20px;">{{preguntaElement.numero}}. Tipo:
-                    <h3 style="display: inline-block;">{{preguntaElement.tipoExplicito}}</h3>
-                </h3>
+                <h3 style="display: inline-block;font-weight: bold; margin: 0;">{{preguntaElement.numero}}.&nbsp;Tipo:&nbsp;</h3>
+                <h3 style="display: inline-block; margin: 0;">{{preguntaElement.tipoExplicito}}</h3>
                 <br>
-                <h3 style="display: inline-block;font-weight: bold; margin-bottom: -20px;">&nbsp;&nbsp;&nbsp;&nbsp;Descripción:
-                    <h3 style="display: inline-block;">{{preguntaElement.descripcion}}</h3>
-                </h3>
+                <h3 style="display: inline-block;font-weight: bold; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Descripción:&nbsp;</h3>
+                <h3 style="display: inline-block; margin: 0;">{{preguntaElement.descripcion}}</h3>
                 <br>
-                <h3 style="display: inline-block;font-weight: bold; margin-bottom: -20px;">&nbsp;&nbsp;&nbsp;&nbsp;Valoración:
-                    <h3 style="display: inline-block;">{{preguntaElement.valoracion}}</h3>
-                </h3>
+                <h3 style="display: inline-block;font-weight: bold; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Valoración:&nbsp;</h3>
+                <h3 style="display: inline-block; margin: 0">{{preguntaElement.valoracion}}</h3>
                 <br>
-                <h3 *ngIf="preguntaElement.urlImagen" style="display: inline-block;font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;Imagen:
+                <ng-template [ngIf]="preguntaElement.imagen">
+                    <h3 style="display: inline-block;font-weight: bold; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Imagen:&nbsp;</h3>
                     <img [src]="preguntaElement.urlImagen" style="display: inline-block; max-width: 256px; max-height: 256px;">
+                    <br>
+                </ng-template>
+                <h3 *ngIf="preguntaElement.opciones" style="display: inline-block;font-weight: bold; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Opciones:&nbsp;
+                    <ng-container *ngFor="let opcionElement of preguntaElement.opciones; let i = index">
+                        <ng-container *ngIf="i === 0; else elseBlockOpciones">
+                            <h3 style="display: inline-block;font-weight: bold; margin: 0;">{{opcionElement.letra}}.&nbsp;</h3>
+                            <h3 style="display: inline-block; margin: 0;">{{opcionElement.opcion}}</h3>
+                            <br>
+                        </ng-container>
+                        <ng-template #elseBlockOpciones>
+                            <h3 style="display: inline-block;font-weight: bold; margin: 0;">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {{opcionElement.letra}}.&nbsp;
+                            </h3>
+                            <h3 style="display: inline-block; margin: 0;">{{opcionElement.opcion}}</h3>
+                            <br>
+                        </ng-template>
+                    </ng-container>
                 </h3>
-                <br>
+                <ng-template [ngIf]="preguntaElement.respuesta">
+                    <br>
+                    <h3 style="display: inline-block; font-weight: bold; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Respuesta:&nbsp;</h3>
+                    <h3 style="display: inline-block; margin: 0">{{preguntaElement.respuesta}}</h3>
+                    <br>
+                </ng-template>
+                <ng-template [ngIf]="preguntaElement.respuestas">
+                    <br>
+                    <h3 style="display: inline-block;font-weight: bold; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Respuestas:&nbsp;</h3>
+                    <ng-container *ngFor="let respuestaElement of preguntaElement.respuestas; let i = index">
+                        <ng-container *ngIf="i === 0; else elseBlockRespuestas">
+                            <ng-container *ngIf="respuestaElement.checked">
+                                <h3 style="display: inline-block; margin: 0">{{respuestaElement.letra}}</h3>
+                            </ng-container>
+                        </ng-container>
+                        <ng-template #elseBlockRespuestas>
+                            <ng-container *ngIf="respuestaElement.checked">
+                                <h3 style="display: inline-block; margin: 0">,&nbsp;{{respuestaElement.letra}}</h3>
+                            </ng-container>
+                        </ng-template>
+                    </ng-container>
+                    <br>
+                </ng-template>
             </div>
+            <br>
         </ng-container>
         <br>
         <div id="botonesExamen">
@@ -50,6 +90,9 @@
             </div>
             <br>
             <br>
+            <div *ngIf="errorServidor" class="fullWidth">
+                <h3 #errorServidor style="font-weight: bold; color: red; display: none;">{{errorServidor}}</h3>
+            </div>
             <button mat-raised-button id="guardarExamen" [disabled]="(!crearExamenForm.valid || preguntas.length === 0)">Guardar</button>
             <button mat-raised-button id="cancelarExamen" type="button" (click)="cerrarDialogCrearExamen()">Cancelar</button>
         </div>
