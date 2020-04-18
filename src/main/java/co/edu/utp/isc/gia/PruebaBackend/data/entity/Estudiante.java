@@ -46,7 +46,6 @@ public class Estudiante implements Serializable {
     @Column(nullable = false)
     private String email;
     
-    @Column(nullable = true)
     private Double nota;
     
     @ToString.Exclude
