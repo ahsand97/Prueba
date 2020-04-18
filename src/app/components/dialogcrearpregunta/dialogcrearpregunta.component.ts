@@ -34,6 +34,7 @@ export class DialogcrearpreguntaComponent implements OnInit {
 
   ngOnInit(): void {
     let numericNumberReg= '^-?[0-9]\\d*(\\.\\d+)?$';
+
     this.addQuestionForm = this.formBuilder.group({
       descripcion: ['', [Validators.required, Validators.maxLength(255)]],
       valoracion: ['', [Validators.required, Validators.pattern(numericNumberReg)]],
@@ -66,7 +67,7 @@ export class DialogcrearpreguntaComponent implements OnInit {
   get descripcion() { return this.addQuestionForm.get('descripcion'); }
   get valoracion() { return this.addQuestionForm.get('valoracion'); }
   get imagen() { return this.addQuestionForm.get('imagen'); }
-
+  
   get opcion() { return this.addOptionForm.get('opcion'); }
 
   @HostListener('window:resize', ['$event'])

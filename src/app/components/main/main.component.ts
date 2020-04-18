@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Inject } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { ExamenesService } from 'src/app/services/examenes.service';
@@ -8,6 +8,8 @@ import { DialogcrearexamenComponent } from '../dialogcrearexamen/dialogcrearexam
 import { VerexamenComponent } from '../verexamen/verexamen.component';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 import { forkJoin } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
+import { GenerarlinkComponent } from '../generarlink/generarlink.component';
 
 @Component({
   selector: 'app-main',
@@ -31,6 +33,7 @@ export class MainComponent implements OnInit {
   
   dialogoCrearExamenAbierto:boolean = false;
   dialogoVerExamenAbierto:boolean = false;
+  dialogoGenerarLinkAbierto:boolean = false;
   heightDialog:number;
   witdhDialog:string;
 
@@ -39,7 +42,8 @@ export class MainComponent implements OnInit {
     private examenesService:ExamenesService, 
     private title:Title, 
     private dialog:MatDialog,
-    private preguntaService:PreguntaService) {
+    private preguntaService:PreguntaService,
+    @Inject(DOCUMENT) private document: Document) {
     this.title.setTitle('Principal');
   }
 
@@ -94,7 +98,7 @@ export class MainComponent implements OnInit {
     this.examenesService.deleteExamen(idExamen).subscribe(next => {this.examenesImagenesList.splice(index,1)} , error => {}) ;
   }
 
-  async verExamen(idExamen, index){
+  async verExamen(idExamen){
     if(this.dialogoVerExamenAbierto == false){
       let examen = await this.examenesService.getExamen(idExamen).toPromise();
       let preguntas= await this.preguntaService.getPreguntas(examen.id).toPromise();
@@ -119,7 +123,7 @@ export class MainComponent implements OnInit {
         })
       }
 
-      preguntas.forEach(async pregunta =>{
+      preguntas.forEach(pregunta =>{
         if(pregunta.dtype == 'respuesta_abierta'){
           let preguntaAmandar = {'numero_pregunta':pregunta.numero_pregunta, 
             'descripcion':pregunta.descripcion, 
@@ -193,6 +197,20 @@ export class MainComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(() =>{
         this.dialogoVerExamenAbierto = false;
+      });
+    }
+  }
+
+  generarLink(idExamen){
+    let link = this.document.location.origin + '/examen/' + idExamen;
+
+    if(this.dialogoGenerarLinkAbierto == false){
+      let dialogRef = this.dialog.open(GenerarlinkComponent, {data: link});
+      dialogRef.afterOpened().subscribe(() => {
+        this.dialogoGenerarLinkAbierto = true;
+      });
+      dialogRef.afterClosed().subscribe(() =>{
+        this.dialogoGenerarLinkAbierto = false;
       });
     }
   }

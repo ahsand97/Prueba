@@ -20,7 +20,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MainComponent } from './components/main/main.component';
 import { DialogcrearexamenComponent } from './components/dialogcrearexamen/dialogcrearexamen.component';
 import { DialogcrearpreguntaComponent } from './components/dialogcrearpregunta/dialogcrearpregunta.component';
-import { VerexamenComponent } from './components/verexamen/verexamen.component'; 
+import { VerexamenComponent } from './components/verexamen/verexamen.component';
+import { RealizarexamenComponent } from './components/realizarexamen/realizarexamen.component';
+import { GenerarlinkComponent } from './components/generarlink/generarlink.component'; 
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { VerexamenComponent } from './components/verexamen/verexamen.component';
     MainComponent,
     DialogcrearexamenComponent,
     DialogcrearpreguntaComponent,
-    VerexamenComponent
+    VerexamenComponent,
+    RealizarexamenComponent,
+    GenerarlinkComponent
   ],
   imports: [
     BrowserModule,

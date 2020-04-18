@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { GuardService } from './services/guard.service';
+import { RealizarexamenComponent } from './components/realizarexamen/realizarexamen.component';
 
 
 const routes: Routes = [
@@ -16,11 +17,13 @@ const routes: Routes = [
     path:'main', component:MainComponent
   },*/
   {
-    path:'main', component:MainComponent, canActivate:[GuardService], data:{'destino':['main']},
-      children:[]
+    path:'main', component:MainComponent, canActivate:[GuardService], data:{'destino':['main']}
   },
   {
-    path:'', pathMatch:'full', redirectTo:'login'
+    path:'examen/:id', component:RealizarexamenComponent, canActivate:[GuardService], data:{'destino':['examen']}
+  },
+  {
+    path:'**', pathMatch:'full', redirectTo:'login'
   }
 ];
 

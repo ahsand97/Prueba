@@ -1,0 +1,103 @@
+<body>
+    <div class="square">
+        <h1 class="centro" style="color: black; margin-top: 30px;">
+            Examen
+        </h1>
+        <div class="fullWidth" *ngIf="examen">
+            <mat-label class="text-info titleInput" style="display: inline-block;">Descripción:</mat-label>
+            <h2 style="display: inline-block; color:black">&nbsp;{{examen.descripcion}}</h2><br>
+            <mat-label class="text-info titleInput" style="display: inline-block;">Nota Máxima:</mat-label>
+            <h2 style="display: inline-block; color:black">&nbsp;{{examen.nota_maxima}}</h2><br>
+        </div>
+        <form *ngIf="FormRespuestas" [formGroup]="FormRespuestas" #formDirective="ngForm" (ngSubmit)="nothing()" autocomplete="off">
+            <h1 class="centro" style="color: black;">Preguntas</h1>
+            <ng-container *ngFor="let preguntaElement of preguntas;">
+                <div class="fullWidth">
+                    <h3 style="display: inline-block;font-weight: bold; margin: 0; color: black;">{{preguntaElement.numero_pregunta}}.&nbsp;Tipo:&nbsp;</h3>
+                    <h3 style="display: inline-block; margin: 0; color: black;">{{preguntaElement.tipo}}</h3>
+
+                    <br>
+                    <h3 style="display: inline-block;font-weight: bold; margin: 0; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;Descripción:&nbsp;</h3>
+                    <h3 style="display: inline-block; margin: 0; color: black;">{{preguntaElement.descripcion}}</h3>
+                    <br>
+                    <h3 style="display: inline-block;font-weight: bold; margin: 0; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;Valoración:&nbsp;</h3>
+                    <h3 style="display: inline-block; margin: 0; color: black;">{{preguntaElement.valoracion}}</h3>
+                    <br>
+                    <ng-template [ngIf]="preguntaElement.imagen">
+                        <h3 style="display: inline-block;font-weight: bold; margin: 0; color: black;">&nbsp;&nbsp;&nbsp;&nbsp;Imagen:&nbsp;</h3>
+                        <img [src]="preguntaElement.imagen" style="display: inline-block; max-width: 256px; max-height: 256px;">
+                        <br>
+                    </ng-template>
+                    <ng-container [ngSwitch]="preguntaElement.tipo">
+                        <ng-container *ngSwitchCase="'Pregunta con respuesta abierta'">
+                            <mat-form-field class="fullWidth">
+                                <textarea class="textAreaInput" matInput type="text" formControlName="{{preguntaElement.numero_pregunta}}"></textarea>
+                                <mat-error *ngIf="(getControl(preguntaElement.numero_pregunta).dirty || getControl(preguntaElement.numero_pregunta).touched) && getControl(preguntaElement.numero_pregunta).invalid && getControl(preguntaElement.numero_pregunta).errors.required">Escribe la respuesta</mat-error>
+                                <mat-error *ngIf="(getControl(preguntaElement.numero_pregunta).dirty || getControl(preguntaElement.numero_pregunta).touched) && getControl(preguntaElement.numero_pregunta).invalid && getControl(preguntaElement.numero_pregunta).errors.maxlength">La respuesta debe contener como máximo 255 caracteres</mat-error>
+                            </mat-form-field>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Pregunta con múltiples opciones y única respuesta'">
+                            <mat-radio-group class="fullWidth" formControlName="{{preguntaElement.numero_pregunta}}">
+                                <ng-container *ngFor="let opcion of preguntaElement.opciones; index as i">
+                                    <ng-container *ngIf="i === 0; else elseBlockOpciones">
+                                        <mat-radio-button [value]='opcion.letra' style="color: black;">
+                                            <strong>{{opcion.letra}}.&nbsp;</strong>{{opcion.descripcion}}
+                                        </mat-radio-button>
+                                    </ng-container>
+                                    <ng-template #elseBlockOpciones>
+                                        <br>
+                                        <mat-radio-button [value]='opcion.letra' style="color: black;">
+                                            <strong>{{opcion.letra}}.&nbsp;</strong>{{opcion.descripcion}}
+                                        </mat-radio-button>
+                                    </ng-template>     
+                                </ng-container>
+                            </mat-radio-group>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Pregunta con múltiples opciones y múltiples respuestas'">
+                            <div class="fullWidth">
+                                <ng-container *ngFor="let opcion of preguntaElement.opciones; index as i">
+                                    <ng-container *ngIf="i === 0; else elseBlockOpcionesMultiples">
+                                        <mat-checkbox style="color: black;" [name]="opcion.letra" [(ngModel)]="opcion.checked" (ngModelChange)="clickCheckBox()" [ngModelOptions]="{standalone: true}">
+                                            <strong>{{opcion.letra}}.&nbsp;</strong>{{opcion.descripcion}}
+                                        </mat-checkbox>
+                                    </ng-container>
+                                    <ng-template #elseBlockOpcionesMultiples>
+                                        <br>
+                                        <mat-checkbox style="color: black;" [name]="opcion.letra" [(ngModel)]="opcion.checked" (ngModelChange)="clickCheckBox()"[ngModelOptions]="{standalone: true}">
+                                            <strong>{{opcion.letra}}.&nbsp;</strong>{{opcion.descripcion}}
+                                        </mat-checkbox>
+                                    </ng-template>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <br>
+                    <br>
+                </div>
+            </ng-container>
+        </form>
+        <form [formGroup]="FormEstudiante" #formDirective="ngForm" (ngSubmit)="nothing()">
+            <mat-form-field class="fullWidth">
+                <mat-label for="nombre" class="text-info titleInput">Nombre Estudiante:</mat-label><br>
+                <input id="inputNombre" matInput type="text" formControlName="nombre">
+                <mat-error *ngIf="(nombre.dirty || nombre.touched) && nombre.invalid && nombre.errors.required">Escribe tu nombre</mat-error>
+                <mat-error *ngIf="(nombre.dirty || nombre.touched) && nombre.invalid && nombre.errors.maxlength">Este campo no puede contener más de 255 caracteres</mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field class="fullWidth">
+                <mat-label for="email" class="text-info titleInput">Correo Electrónico:</mat-label><br>
+                <input id="inputEmail" style="color: black;" matInput type="email" formControlName="email">
+                <mat-error *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.required">Escribe tu correo electrónico</mat-error>
+                <mat-error *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.email">Escribe un correo válido</mat-error>
+            </mat-form-field>
+            <br>
+            <div id="botonesPregunta">
+                <button mat-raised-button id="guardarPregunta" [disabled]="( !FormRespuestasValido || !FormEstudiante.valid || !hayRespuestaMultiple)">Guardar</button>
+                <button mat-raised-button id="cancelarPregunta" type="button" (click)="nothing()">Cancelar</button>
+            </div>
+            <br>
+            <br>
+        </form>
+        
+    </div>
+</body>

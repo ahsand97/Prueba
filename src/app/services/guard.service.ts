@@ -13,7 +13,7 @@ export class GuardService implements CanActivate  {
     let destino = route.data['destino'] as Array<string>;
     let identidad = this.authService.getIdentity();
     if(identidad){
-      if(destino[0] == 'login'){
+      if(destino[0] == 'login' || destino[0] == 'examen'){
         this.router.navigate(['main']);
       }
       else if(destino[0] == 'main'){
@@ -24,7 +24,7 @@ export class GuardService implements CanActivate  {
       }
     }
     else{
-      if(destino[0] == 'login'){
+      if(destino[0] == 'login' || destino[0] == 'examen'){
         return true;
       }
       else{

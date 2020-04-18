@@ -1,9 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, HostListener } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ComunicacionService } from 'src/app/services/comunicacion.service';
-import { ExamenesService } from 'src/app/services/examenes.service';
-import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-verexamen',
@@ -19,11 +17,17 @@ export class VerexamenComponent implements OnInit {
   constructor(private dialogRef:MatDialogRef<VerexamenComponent>, 
     private domSanitizer:DomSanitizer, 
     private comunicacionService:ComunicacionService,
-    private examenService:ExamenesService,
     @Inject(MAT_DIALOG_DATA) public data) { 
     this.comunicacionService.emitter.subscribe(() => {
       this.dialogRef.close();
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  resizeDialog() {
+    let heightDialog = String(window.innerHeight * 0.7);
+    let witdhDialog = String(window.innerWidth * 0.6) + 'px';
+    this.dialogRef.updateSize(witdhDialog, heightDialog);
   }
 
   ordenarPreguntas(a, b){

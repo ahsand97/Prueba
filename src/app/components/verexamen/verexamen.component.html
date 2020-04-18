@@ -1,9 +1,9 @@
 <div>
     <h1 class="centro">Examen</h1>
     <div class="fullWidth">
-        <mat-label for="descripcion" class="text-info titleInput" style="display: inline-block;">Descripción:</mat-label>
+        <mat-label class="text-info titleInput" style="display: inline-block;">Descripción:</mat-label>
         <h2 style="display: inline-block;">&nbsp;{{examen.descripcion}}</h2><br>
-        <mat-label for="descripcion" class="text-info titleInput" style="display: inline-block;">Nota Máxima:</mat-label>
+        <mat-label class="text-info titleInput" style="display: inline-block;">Nota Máxima:</mat-label>
         <h2 style="display: inline-block;">&nbsp;{{examen.nota_maxima}}</h2><br>
     </div>
     <h1 class="centro">Preguntas</h1>
@@ -16,7 +16,7 @@
             <h3 style="display: inline-block; margin: 0;">{{preguntaElement.descripcion}}</h3>
             <br>
             <h3 style="display: inline-block;font-weight: bold; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Valoración:&nbsp;</h3>
-            <h3 style="display: inline-block; margin: 0">{{preguntaElement.valoracion}}</h3>
+            <h3 style="display: inline-block; margin: 0;">{{preguntaElement.valoracion}}</h3>
             <br>
             <ng-template [ngIf]="preguntaElement.imagen">
                 <h3 style="display: inline-block;font-weight: bold; margin: 0;">&nbsp;&nbsp;&nbsp;&nbsp;Imagen:&nbsp;</h3>
