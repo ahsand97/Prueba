@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ExamenesService } from 'src/app/services/examenes.service';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 import { forkJoin } from 'rxjs';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
+import { RespuestasService } from 'src/app/services/respuestas.service';
+import { Estudiante } from 'src/app/dto/Estudiante';
 
 @Component({
   selector: 'app-realizarexamen',
@@ -17,13 +19,25 @@ export class RealizarexamenComponent implements OnInit {
   examen:any;
   preguntas = [];
   hayRespuestaMultiple:boolean = false;
+  noHayPreguntasDeMultiplesRespuestas:boolean;
 
   FormRespuestas:FormGroup;
   FormEstudiante:FormGroup;
 
   FormRespuestasValido:boolean = false;
 
-  constructor(private router:Router, private activeRoute:ActivatedRoute, private formBuilder:FormBuilder, private examenService:ExamenesService, private preguntaService:PreguntaService, private domSanitizer:DomSanitizer, private title:Title) { 
+  @ViewChild('mensajeServidor') mensajeServidor: ElementRef;
+  @ViewChild('inPutNombreEstudiante') inPutNombreEstudiante: ElementRef;
+  @ViewChild('inputEmailEstudiante') inputEmailEstudiante: ElementRef;
+
+  constructor(private router:Router, 
+    private activeRoute:ActivatedRoute, 
+    private formBuilder:FormBuilder, 
+    private examenService:ExamenesService, 
+    private preguntaService:PreguntaService, 
+    private domSanitizer:DomSanitizer, 
+    private title:Title,
+    private respuestasService:RespuestasService) { 
     this.title.setTitle('Examen');
   }
 
@@ -139,8 +153,9 @@ export class RealizarexamenComponent implements OnInit {
 
       this.generarForms();
       }
-    catch{
-      this.router.navigate(['login']);
+    catch (e){
+      //console.log(e);
+      //this.router.navigate(['login']);
     }
   }
     
@@ -150,12 +165,15 @@ export class RealizarexamenComponent implements OnInit {
     this.preguntas.forEach(pregunta => {
       //console.log(pregunta);
       if(pregunta.tipo == 'Pregunta con respuesta abierta'){
+        this.noHayPreguntasDeMultiplesRespuestas = true;
         fields[pregunta.numero_pregunta] = new FormControl('',[Validators.required, Validators.maxLength(255)]);
       }
       else if(pregunta.tipo == 'Pregunta con múltiples opciones y única respuesta'){
+        this.noHayPreguntasDeMultiplesRespuestas = true;
         fields[pregunta.numero_pregunta] = new FormControl('',Validators.required);
       }
       else if(pregunta.tipo == 'Pregunta con múltiples opciones y múltiples respuestas'){
+        this.noHayPreguntasDeMultiplesRespuestas = false;
         let aux2 = pregunta.opciones;
         aux2.forEach(e =>{
           e.checked = false;
@@ -184,15 +202,74 @@ export class RealizarexamenComponent implements OnInit {
 
   }
 
-  nothing(){
-    //console.log('clicked');
-    this.FormRespuestas.reset();
-    this.FormEstudiante.reset();
+  nothing(formDirective:FormGroupDirective){
+    let estudiante = new Estudiante(null, this.nombre.value, this.email.value, this.idExamen);
+    let hayPreguntasAbiertas:boolean = false;
+    this.respuestasService.addEstudiante(estudiante).subscribe(resp=> {
+      let respuestasParaServidor = [];
+      let idEstudiante = resp.id;
+      this.preguntas.forEach(pregunta =>{
+        if(pregunta.tipo != 'Pregunta con múltiples opciones y múltiples respuestas'){
+          let control = this.FormRespuestas.get(String(pregunta.numero_pregunta));
+          let respuesta = {'idEstudiante': resp.id, 'numeroPregunta': pregunta.numero_pregunta, 'tipo': pregunta.tipo, 'respuesta': control.value, 'valoracion': pregunta.valoracion, 'isCorrect': null};
+          respuestasParaServidor.push(respuesta);
+        }
+        else{
+          pregunta.opciones.forEach(opcion =>{
+            if(opcion.checked == true){
+              let respuesta = {'idEstudiante': resp.id, 'numeroPregunta': pregunta.numero_pregunta, 'tipo': pregunta.tipo, 'respuesta': opcion.letra, 'valoracion': pregunta.valoracion, 'isCorrect': null};
+              respuestasParaServidor.push(respuesta);
+            }
+          });
+        }
+      });
+      
+      let observableRespuestas = [];
 
+      respuestasParaServidor.forEach(respuesta =>{
+        observableRespuestas.push(this.respuestasService.addRespuesta(respuesta));
+      });
+
+
+      
+      forkJoin(observableRespuestas).subscribe(resp=> {
+        resp.forEach(e =>{
+          if(e['tipo'] == 'Pregunta con respuesta abierta'){
+            hayPreguntasAbiertas = true;
+          }
+        });
+
+        this.respuestasService.getNota(idEstudiante).subscribe(resp => {
+          if(hayPreguntasAbiertas == false){
+            this.mensajeServidor.nativeElement.innerHTML = 'Examen enviado, su nota es de ' + resp;
+          }
+          else{
+            this.mensajeServidor.nativeElement.innerHTML = 'Examen enviado';
+          }
+          this.mensajeServidor.nativeElement.style.display = 'block';
+          this.resetForms(formDirective);
+        });
+
+      }, error=> {
+      });
+
+
+    }, error=> {
+    });
+  }
+
+  resetForms(formDirective:FormGroupDirective){
+    //Reseteo formulario Respuestas
+    this.FormRespuestas.reset();
     this.FormRespuestas.markAsPristine();
     this.FormRespuestas.markAsUntouched();
     this.FormRespuestas.updateValueAndValidity();
 
+    //Reseteo formulario datos Estudiante
+    this.inPutNombreEstudiante.nativeElement.blur();
+    this.inputEmailEstudiante.nativeElement.blur();
+    formDirective.resetForm();
+    this.FormEstudiante.reset();
     this.FormEstudiante.markAsPristine();
     this.FormEstudiante.markAsUntouched();
     this.FormEstudiante.updateValueAndValidity();
@@ -208,7 +285,10 @@ export class RealizarexamenComponent implements OnInit {
         })
       }
     })
+  }
 
+  hideMensajeServer(){
+    this.mensajeServidor.nativeElement.style.display = 'none';
   }
 
   getControl(numero){

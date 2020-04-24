@@ -59,7 +59,6 @@ export class VerexamenComponent implements OnInit {
     })
 
     this.preguntas.sort(this.ordenarPreguntas);
-    //console.log(this.preguntas);
   }
 
   close(){

@@ -9,7 +9,7 @@
             <mat-label class="text-info titleInput" style="display: inline-block;">Nota Máxima:</mat-label>
             <h2 style="display: inline-block; color:black">&nbsp;{{examen.nota_maxima}}</h2><br>
         </div>
-        <form *ngIf="FormRespuestas" [formGroup]="FormRespuestas" #formDirective="ngForm" (ngSubmit)="nothing()" autocomplete="off">
+        <form *ngIf="FormRespuestas" [formGroup]="FormRespuestas" autocomplete="off">
             <h1 class="centro" style="color: black;">Preguntas</h1>
             <ng-container *ngFor="let preguntaElement of preguntas;">
                 <div class="fullWidth">
@@ -31,7 +31,7 @@
                     <ng-container [ngSwitch]="preguntaElement.tipo">
                         <ng-container *ngSwitchCase="'Pregunta con respuesta abierta'">
                             <mat-form-field class="fullWidth">
-                                <textarea class="textAreaInput" matInput type="text" formControlName="{{preguntaElement.numero_pregunta}}"></textarea>
+                                <textarea class="textAreaInput" matInput type="text" formControlName="{{preguntaElement.numero_pregunta}}" (click)="hideMensajeServer()"></textarea>
                                 <mat-error *ngIf="(getControl(preguntaElement.numero_pregunta).dirty || getControl(preguntaElement.numero_pregunta).touched) && getControl(preguntaElement.numero_pregunta).invalid && getControl(preguntaElement.numero_pregunta).errors.required">Escribe la respuesta</mat-error>
                                 <mat-error *ngIf="(getControl(preguntaElement.numero_pregunta).dirty || getControl(preguntaElement.numero_pregunta).touched) && getControl(preguntaElement.numero_pregunta).invalid && getControl(preguntaElement.numero_pregunta).errors.maxlength">La respuesta debe contener como máximo 255 caracteres</mat-error>
                             </mat-form-field>
@@ -40,13 +40,13 @@
                             <mat-radio-group class="fullWidth" formControlName="{{preguntaElement.numero_pregunta}}">
                                 <ng-container *ngFor="let opcion of preguntaElement.opciones; index as i">
                                     <ng-container *ngIf="i === 0; else elseBlockOpciones">
-                                        <mat-radio-button [value]='opcion.letra' style="color: black;">
+                                        <mat-radio-button [value]='opcion.letra' style="color: black;" (click)="hideMensajeServer()">
                                             <strong>{{opcion.letra}}.&nbsp;</strong>{{opcion.descripcion}}
                                         </mat-radio-button>
                                     </ng-container>
                                     <ng-template #elseBlockOpciones>
                                         <br>
-                                        <mat-radio-button [value]='opcion.letra' style="color: black;">
+                                        <mat-radio-button [value]='opcion.letra' style="color: black;" (click)="hideMensajeServer()">
                                             <strong>{{opcion.letra}}.&nbsp;</strong>{{opcion.descripcion}}
                                         </mat-radio-button>
                                     </ng-template>     
@@ -57,13 +57,13 @@
                             <div class="fullWidth">
                                 <ng-container *ngFor="let opcion of preguntaElement.opciones; index as i">
                                     <ng-container *ngIf="i === 0; else elseBlockOpcionesMultiples">
-                                        <mat-checkbox style="color: black;" [name]="opcion.letra" [(ngModel)]="opcion.checked" (ngModelChange)="clickCheckBox()" [ngModelOptions]="{standalone: true}">
+                                        <mat-checkbox style="color: black;" [name]="opcion.letra" [(ngModel)]="opcion.checked" (ngModelChange)="clickCheckBox()" [ngModelOptions]="{standalone: true}" (click)="hideMensajeServer()">
                                             <strong>{{opcion.letra}}.&nbsp;</strong>{{opcion.descripcion}}
                                         </mat-checkbox>
                                     </ng-container>
                                     <ng-template #elseBlockOpcionesMultiples>
                                         <br>
-                                        <mat-checkbox style="color: black;" [name]="opcion.letra" [(ngModel)]="opcion.checked" (ngModelChange)="clickCheckBox()"[ngModelOptions]="{standalone: true}">
+                                        <mat-checkbox style="color: black;" [name]="opcion.letra" [(ngModel)]="opcion.checked" (ngModelChange)="clickCheckBox()"[ngModelOptions]="{standalone: true}" (click)="hideMensajeServer()">
                                             <strong>{{opcion.letra}}.&nbsp;</strong>{{opcion.descripcion}}
                                         </mat-checkbox>
                                     </ng-template>
@@ -76,28 +76,36 @@
                 </div>
             </ng-container>
         </form>
-        <form [formGroup]="FormEstudiante" #formDirective="ngForm" (ngSubmit)="nothing()">
+        <form [formGroup]="FormEstudiante" #formDirective="ngForm" (ngSubmit)="nothing(formDirective)">
             <mat-form-field class="fullWidth">
                 <mat-label for="nombre" class="text-info titleInput">Nombre Estudiante:</mat-label><br>
-                <input id="inputNombre" matInput type="text" formControlName="nombre">
+                <input #inPutNombreEstudiante id="inputNombre" matInput type="text" formControlName="nombre" (click)="hideMensajeServer()">
                 <mat-error *ngIf="(nombre.dirty || nombre.touched) && nombre.invalid && nombre.errors.required">Escribe tu nombre</mat-error>
                 <mat-error *ngIf="(nombre.dirty || nombre.touched) && nombre.invalid && nombre.errors.maxlength">Este campo no puede contener más de 255 caracteres</mat-error>
             </mat-form-field>
             <br>
             <mat-form-field class="fullWidth">
                 <mat-label for="email" class="text-info titleInput">Correo Electrónico:</mat-label><br>
-                <input id="inputEmail" style="color: black;" matInput type="email" formControlName="email">
+                <input #inputEmailEstudiante id="inputEmail" style="color: black;" matInput type="email" formControlName="email" (click)="hideMensajeServer()">
                 <mat-error *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.required">Escribe tu correo electrónico</mat-error>
                 <mat-error *ngIf="(email.dirty || email.touched) && email.invalid && email.errors.email">Escribe un correo válido</mat-error>
             </mat-form-field>
             <br>
-            <div id="botonesPregunta">
-                <button mat-raised-button id="guardarPregunta" [disabled]="( !FormRespuestasValido || !FormEstudiante.valid || !hayRespuestaMultiple)">Guardar</button>
-                <button mat-raised-button id="cancelarPregunta" type="button" (click)="nothing()">Cancelar</button>
+            <div class="fullWidth centro" #mensajeServidor style="color: green;">
             </div>
+            <br>
+            <div *ngIf="noHayPreguntasDeMultiplesRespuestas; else elseBlockBotones" id="botonesPregunta">
+                <button mat-raised-button id="guardarPregunta" [disabled]="(!FormRespuestasValido || !FormEstudiante.valid || !noHayPreguntasDeMultiplesRespuestas)">Guardar</button>
+                <button mat-raised-button id="cancelarPregunta" type="button" (click)="resetForms(formDirective)">Cancelar</button>
+            </div>
+            <ng-template #elseBlockBotones>
+                <div id="botonesPregunta">
+                    <button mat-raised-button id="guardarPregunta" [disabled]="(!FormRespuestasValido || !FormEstudiante.valid || !hayRespuestaMultiple)">Guardar</button>
+                    <button mat-raised-button id="cancelarPregunta" type="button" (click)="resetForms(formDirective)">Cancelar</button>
+                </div>
+            </ng-template>
             <br>
             <br>
         </form>
-        
     </div>
 </body>
