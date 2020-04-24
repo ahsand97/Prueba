@@ -32,6 +32,6 @@ public interface PreguntaRepository<T extends Pregunta> extends CrudRepository<T
     @Query(value="SELECT id FROM preguntas WHERE examen_id = :idExamen AND numero_pregunta = :numeroPregunta", nativeQuery=true)
     Long findIdPregunta(@Param("idExamen") String idExamen, @Param("numeroPregunta") String numeroPregunta);
     
-    @Query(value="SELECT id, tipo_pregunta FROM preguntas WHERE examen_id = :idExamen AND numero_pregunta = :numeroPregunta", nativeQuery=true)
-    Map<String,BigInteger> findIdAndTipoPregunta(@Param("idExamen") String idExamen, @Param("numeroPregunta") String numeroPregunta);
+    @Query(value="SELECT tipo_pregunta FROM preguntas WHERE examen_id = :idExamen AND numero_pregunta = :numeroPregunta", nativeQuery=true)
+    String findTipoPregunta(@Param("idExamen") String idExamen, @Param("numeroPregunta") String numeroPregunta);
 }

@@ -72,7 +72,7 @@ public class ExamenService {
         }
         else{
             Optional<Examen> examenToRemove = examenRepository.findById(Long.valueOf(idExamen));
-            if(examenToRemove.get() == null){
+            if(examenToRemove == null){
                 throw new Exception("No existe el exámen");
             }
             else{

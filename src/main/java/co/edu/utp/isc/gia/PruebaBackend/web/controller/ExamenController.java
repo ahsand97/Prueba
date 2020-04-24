@@ -58,7 +58,7 @@ public class ExamenController {
     }
     
     @DeleteMapping()
-    public ResponseEntity<?> deleteExamen(@RequestParam("id") String id) throws Exception{
+    public ResponseEntity<?> deleteExamen(@RequestParam("id") String id){
         try{
             examenService.deleteExamen(id);
             return ResponseEntity.status(HttpStatus.OK).build();

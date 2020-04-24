@@ -16,9 +16,7 @@ import co.edu.utp.isc.gia.PruebaBackend.data.repository.PreguntaRepository;
 import co.edu.utp.isc.gia.PruebaBackend.data.repository.PreguntaRespuestaAbiertaRepository;
 import co.edu.utp.isc.gia.PruebaBackend.data.repository.PreguntaUnicaRespuestaRepository;
 import co.edu.utp.isc.gia.PruebaBackend.web.dto.PreguntaDTO;
-import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import co.edu.utp.isc.gia.PruebaBackend.web.dto.PreguntaDTOInterface;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  *
@@ -136,10 +133,8 @@ public class PreguntaService {
             throw new Exception("Faltan datos");
         }
         else{
-            Map<String,BigInteger> preguntaFromDB = preguntaRepository.findIdAndTipoPregunta(Id, numeroPregunta);
-            Long idPreguntaBase = preguntaFromDB.get("id").longValue();
-            String tipoPreguntaBase = String.valueOf(preguntaFromDB.get("tipo_pregunta"));
-            
+            Long idPreguntaBase = preguntaRepository.findIdPregunta(Id, numeroPregunta);
+            String tipoPreguntaBase = preguntaRepository.findTipoPregunta(Id, numeroPregunta);
             if(idPreguntaBase == null){
                 throw new Exception("No se encuentra la pregunta");
             }

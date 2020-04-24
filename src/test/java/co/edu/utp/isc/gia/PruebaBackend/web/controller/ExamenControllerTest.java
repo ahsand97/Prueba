@@ -96,7 +96,7 @@ public class ExamenControllerTest {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/examenes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(inputToAPI)))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+                .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
         
         ExamenDTO resultFromController = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), new TypeReference<ExamenDTO>() {});
         

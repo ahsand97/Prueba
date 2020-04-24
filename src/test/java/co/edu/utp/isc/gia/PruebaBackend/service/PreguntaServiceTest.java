@@ -16,6 +16,9 @@ import co.edu.utp.isc.gia.PruebaBackend.data.repository.PreguntaRepository;
 import co.edu.utp.isc.gia.PruebaBackend.data.repository.PreguntaRespuestaAbiertaRepository;
 import co.edu.utp.isc.gia.PruebaBackend.data.repository.PreguntaUnicaRespuestaRepository;
 import co.edu.utp.isc.gia.PruebaBackend.web.dto.PreguntaDTO;
+import co.edu.utp.isc.gia.PruebaBackend.web.dto.PreguntaDTOInterface;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,8 +29,10 @@ import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile ;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
 
 
@@ -72,7 +77,6 @@ public class PreguntaServiceTest {
         
         PreguntaService instance = new PreguntaService(preguntaRepository, preguntaRARepository, preguntaURRepository, preguntaMRRepository, examenRepository, preguntaMapper);
         
-        
         PreguntaRespuestaAbierta result = (PreguntaRespuestaAbierta) instance.PreguntaToChild(P, tipoPregunta).get();
 
         assertEquals(result.getNumero_pregunta(), P.getNumero_pregunta());
@@ -87,7 +91,6 @@ public class PreguntaServiceTest {
         
         PreguntaService instance = new PreguntaService(preguntaRepository, preguntaRARepository, preguntaURRepository, preguntaMRRepository, examenRepository, preguntaMapper);
         
-        
         PreguntaUnicaRespuesta result = (PreguntaUnicaRespuesta) instance.PreguntaToChild(P, tipoPregunta).get();
 
         assertEquals(result.getNumero_pregunta(), P.getNumero_pregunta());
@@ -101,7 +104,6 @@ public class PreguntaServiceTest {
         Integer tipoPregunta = 3;
         
         PreguntaService instance = new PreguntaService(preguntaRepository, preguntaRARepository, preguntaURRepository, preguntaMRRepository, examenRepository, preguntaMapper);
-        
         
         PreguntaMultiplesRespuestas result = (PreguntaMultiplesRespuestas) instance.PreguntaToChild(P, tipoPregunta).get();
 
@@ -283,15 +285,46 @@ public class PreguntaServiceTest {
             instance.addImagenToPregunta(Id, numeroPregunta, imagen);
         });
     }
-    /*
+    
     @Test
-    public void testAddImagenToPreguntaBodyOkResultOk() throws Exception {
-        Optional<Pregunta> expectedFromRepository = Optional.of(new Pregunta(1L, 1, "¿Cuál es la capital de Colombia?", null, 5.0, null));
-        when(preguntaRepository.findIdAndTipoPregunta(any(String.class),any(String.class))).thenReturn(expectedFromRepository.get());
-        when(preguntaRepository.save(any(Pregunta.class))).thenReturn(expectedFromRepository.get());
+    public void testAddImagenToPreguntaBodyOkResultQuestionNotFound() throws Exception {
+        Long idFromRepository = null;
+        String tipoPreguntaFromRepository = "";
+        when(preguntaRepository.findIdPregunta(any(String.class),any(String.class))).thenReturn(idFromRepository);
+        when(preguntaRepository.findTipoPregunta(any(String.class),any(String.class))).thenReturn(tipoPreguntaFromRepository);
+        
         //Input
-        String Id = "15";
-        String numeroPregunta = "1";
+        String Id = String.valueOf(1L);
+        String numeroPregunta = String.valueOf(1);
+        byte[] content = null;
+        MockMultipartFile imagen = new MockMultipartFile("ImagenPrueba", content);
+        
+        PreguntaService instance = new PreguntaService(preguntaRepository, preguntaRARepository, preguntaURRepository, preguntaMRRepository, examenRepository, preguntaMapper);
+        
+        assertThrows(Exception.class, () -> {
+            instance.addImagenToPregunta(Id, numeroPregunta, imagen);
+        });
+    }
+    
+    @Test
+    public void testAddImagenToPreguntaBodyOkTipoPreguntaRespuestaAbiertaResultOk() throws Exception {
+        Long idFromRepository = 1L;
+        String tipoPreguntaFromRepository = "respuesta_abierta";
+        when(preguntaRepository.findIdPregunta(any(String.class),any(String.class))).thenReturn(idFromRepository);
+        when(preguntaRepository.findTipoPregunta(any(String.class),any(String.class))).thenReturn(tipoPreguntaFromRepository);
+        
+        PreguntaRespuestaAbierta PRAFromRepository = new PreguntaRespuestaAbierta();
+        PRAFromRepository.setId(1L);
+        PRAFromRepository.setNumero_pregunta(1);
+        PRAFromRepository.setValoracion(1.3);
+        
+        Optional<PreguntaRespuestaAbierta> OptionalOfPRA = Optional.of(PRAFromRepository);
+        when(preguntaRARepository.findById(any(Long.class))).thenReturn(OptionalOfPRA);
+        when(preguntaRARepository.save(any(PreguntaRespuestaAbierta.class))).thenReturn(null);
+        
+        //Input
+        String Id = String.valueOf(1L);
+        String numeroPregunta = String.valueOf(1);
         byte[] content = null;
         MockMultipartFile imagen = new MockMultipartFile("ImagenPrueba", content);
         
@@ -300,22 +333,106 @@ public class PreguntaServiceTest {
         
         instance.addImagenToPregunta(Id, numeroPregunta, imagen);
     }
-    */
+    
     @Test
-    public void testAddImagenToPreguntaBodyOkNoSeEncuentraPreguntaExpectedException() throws Exception {
-        when(preguntaRepository.findById(any(Long.class))).thenReturn(null);
+    public void testAddImagenToPreguntaBodyOkTipoPreguntaUnicaRespuestaResultOk() throws Exception {
+        Long idFromRepository = 1L;
+        String tipoPreguntaFromRepository = "unica_respuesta";
+        when(preguntaRepository.findIdPregunta(any(String.class),any(String.class))).thenReturn(idFromRepository);
+        when(preguntaRepository.findTipoPregunta(any(String.class),any(String.class))).thenReturn(tipoPreguntaFromRepository);
+        
+        PreguntaUnicaRespuesta PURFromRepository = new PreguntaUnicaRespuesta();
+        PURFromRepository.setId(1L);
+        PURFromRepository.setNumero_pregunta(1);
+        PURFromRepository.setValoracion(1.3);
+        
+        Optional<PreguntaUnicaRespuesta> OptionalOfPUR = Optional.of(PURFromRepository);
+        when(preguntaURRepository.findById(any(Long.class))).thenReturn(OptionalOfPUR);
+        when(preguntaURRepository.save(any(PreguntaUnicaRespuesta.class))).thenReturn(null);
         
         //Input
-        String Id = "15";
-        String numeroPregunta = "1";
+        String Id = String.valueOf(1L);
+        String numeroPregunta = String.valueOf(1);
         byte[] content = null;
         MockMultipartFile imagen = new MockMultipartFile("ImagenPrueba", content);
         
         //Target
         PreguntaService instance = new PreguntaService(preguntaRepository, preguntaRARepository, preguntaURRepository, preguntaMRRepository, examenRepository, preguntaMapper);
         
+        instance.addImagenToPregunta(Id, numeroPregunta, imagen);
+    }
+    
+    @Test
+    public void testAddImagenToPreguntaBodyOkTipoPreguntaMultiplesRespuestasResultOk() throws Exception {
+        Long idFromRepository = 1L;
+        String tipoPreguntaFromRepository = "multiples_respuestas";
+        when(preguntaRepository.findIdPregunta(any(String.class),any(String.class))).thenReturn(idFromRepository);
+        when(preguntaRepository.findTipoPregunta(any(String.class),any(String.class))).thenReturn(tipoPreguntaFromRepository);
+        
+        PreguntaMultiplesRespuestas PMRFromRepository = new PreguntaMultiplesRespuestas();
+        PMRFromRepository.setId(1L);
+        PMRFromRepository.setNumero_pregunta(1);
+        PMRFromRepository.setValoracion(1.3);
+        
+        Optional<PreguntaMultiplesRespuestas> OptionalOfPMR = Optional.of(PMRFromRepository);
+        when(preguntaMRRepository.findById(any(Long.class))).thenReturn(OptionalOfPMR);
+        when(preguntaMRRepository.save(any(PreguntaMultiplesRespuestas.class))).thenReturn(null);
+        
+        //Input
+        String Id = String.valueOf(1L);
+        String numeroPregunta = String.valueOf(1);
+        byte[] content = null;
+        MockMultipartFile imagen = new MockMultipartFile("ImagenPrueba", content);
+        
+        //Target
+        PreguntaService instance = new PreguntaService(preguntaRepository, preguntaRARepository, preguntaURRepository, preguntaMRRepository, examenRepository, preguntaMapper);
+        
+        instance.addImagenToPregunta(Id, numeroPregunta, imagen);
+    }
+    
+    @Test
+    public void testGetPreguntas_idExamenEmptyExpectedException(){
+        String idExamenInput = null;
+        
+        PreguntaService instance = new PreguntaService(preguntaRepository, preguntaRARepository, preguntaURRepository, preguntaMRRepository, examenRepository, preguntaMapper);
+        
         assertThrows(Exception.class, () -> {
-            instance.addImagenToPregunta(Id, numeroPregunta, imagen);
+            instance.getPreguntas(idExamenInput);
         });
+    }
+    
+    @Test
+    public void testGetPreguntas_idExamenOkResultOk() throws Exception{
+        List<PreguntaDTOInterface> preguntasInterface = new ArrayList<>();
+        
+        ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
+        PreguntaDTOInterface projection = factory.createProjection(PreguntaDTOInterface.class);
+        
+        projection.setid(1L);
+        projection.setnumero_pregunta(1);
+        projection.setdescripcion("abc");
+        byte[] content = null;
+        projection.setimagen(content);
+        projection.setvaloracion(1.0);
+        projection.settipo_pregunta("cde");
+        projection.setexamen_id(1L);
+       
+        preguntasInterface.add(projection);
+        when(preguntaRepository.findPreguntasByIdExamen(any(Long.class))).thenReturn(preguntasInterface);
+        
+        //Input
+        String idExamenInput = "1";
+        
+        //Target
+        PreguntaService instance = new PreguntaService(preguntaRepository, preguntaRARepository, preguntaURRepository, preguntaMRRepository, examenRepository, preguntaMapper);
+        
+        
+        PreguntaDTO exp = new PreguntaDTO(1L, 1, "abc", content, 1.0, "cde", 1L);
+        List<PreguntaDTO> expectedResult = new ArrayList<>();
+        expectedResult.add(exp);
+        
+        List<PreguntaDTO> result = instance.getPreguntas(idExamenInput);
+        
+        assertEquals(expectedResult, result);
     }
 }

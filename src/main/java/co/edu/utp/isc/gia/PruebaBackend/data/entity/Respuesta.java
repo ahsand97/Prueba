@@ -6,6 +6,7 @@
 package co.edu.utp.isc.gia.PruebaBackend.data.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,7 +22,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -35,7 +35,6 @@ import lombok.ToString;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name="respuestas")
 public class Respuesta implements Serializable{
@@ -55,4 +54,11 @@ public class Respuesta implements Serializable{
     joinColumns=@JoinColumn(name="respuesta_id"),
     inverseJoinColumns=@JoinColumn(name="opcion_id"))
     private List<Opcion> opciones;
+    
+    public boolean addOpcion(Opcion opcion) {
+        if(opciones == null){
+            opciones = new ArrayList<>();
+        }
+        return opciones.add(opcion);
+    }
 }

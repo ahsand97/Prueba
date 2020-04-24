@@ -172,4 +172,97 @@ public class ExamenServiceTest {
         });
     }
     
+    @Test
+    public void testDeleteExamen_BodyNullOrEmptyResultException(){
+        //Input
+        String input = null;
+       
+        //Target
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
+        
+        //Expected exception
+        assertThrows(Exception.class, () -> {
+            instance.deleteExamen(input);
+        });
+    }
+    
+    @Test
+    public void testDeleteExamen_BodyOkResultNoseEncuentraExamen() throws Exception{
+        
+        
+        when(examenRepository.findById(any(Long.class))).thenReturn(null);
+        
+        //Input
+        String input = "1";
+        
+        //Target
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
+ 
+        
+        //Expected exception
+        Throwable exception = assertThrows(Exception.class, () -> instance.deleteExamen(input));
+        
+        assertEquals("No existe el exámen", exception.getMessage());
+    }
+    
+    @Test
+    public void testDeleteExamen_BodyOkResultTrue() throws Exception{
+        Examen ex = new Examen(1L, "abc", 5.0, null, null);
+        Optional<Examen> expectedFromDB = Optional.of(ex);
+        when(examenRepository.findById(any(Long.class))).thenReturn(expectedFromDB);
+        
+        //Input
+        String input = "1";
+        
+        //Target
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
+        
+        //Expected
+        Boolean exp = true;
+        
+        //Test
+        Boolean result = instance.deleteExamen(input);
+        
+        //Validation
+        assertEquals(exp, result);
+    }
+    
+    @Test
+    public void testGetExamen_idOkExamenNotFound() throws Exception{
+        when(examenRepository.findById(any(Long.class))).thenReturn(null);
+        
+        //Input
+        String input = "1";
+        
+        //Target
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
+        
+        //Expected exception
+        assertThrows(Exception.class, () -> {
+            instance.getExamen(input);
+        });
+    }
+    
+    @Test
+    public void testGetExmane_idOkResultOk() throws Exception{
+        Examen ex = new Examen(1L, "abc", 5.0, null, null);
+        Optional<Examen> expectedFromDB = Optional.of(ex);
+        when(examenRepository.findById(any(Long.class))).thenReturn(expectedFromDB);
+        
+        //Input
+        String input = "1";
+        
+        //Target
+        ExamenService instance = new ExamenService(examenRepository, preguntaRepository, profesorRepository, examenMapper);
+        
+        //Expected
+        ExamenDTO expected = new ExamenDTO(1L, "abc", 5.0, 5, 1L);
+        
+        //Test
+        ExamenDTO result = instance.getExamen(input);
+        
+        assertEquals(expected.getId(), result.getId());
+        assertEquals(expected.getDescripcion(), result.getDescripcion());
+        assertEquals(expected.getNota_maxima(), result.getNota_maxima());
+    }
 }

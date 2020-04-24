@@ -18,4 +18,12 @@ public interface PreguntaDTOInterface {
     Double getvaloracion();
     String gettipo_pregunta();
     Long getexamen_id();
+    
+    void setid(Long id);
+    void setnumero_pregunta(Integer numero_pregunta);
+    void setdescripcion(String descripcion);
+    void setimagen(byte[] imagen);
+    void setvaloracion(Double valoracion);
+    void settipo_pregunta(String tipo_pregunta);
+    void setexamen_id(Long examen_id);
 }

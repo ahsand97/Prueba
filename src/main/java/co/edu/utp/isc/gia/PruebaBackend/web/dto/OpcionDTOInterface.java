@@ -16,4 +16,11 @@ public interface OpcionDTOInterface {
     Long getpregunta_unica_respuesta_id();
     Long getpregunta_multiples_respuestas_id();
     Long getrespuesta_multiple_id();
+    
+    void setID(Long id);
+    void setLetra(String letra);
+    void setDescripcion(String descripcion);
+    void setpregunta_unica_respuesta_id(Long pregunta_unica_respuesta_id);
+    void setpregunta_multiples_respuestas_id(Long pregunta_multiples_respuestas_id);
+    void setrespuesta_multiple_id(Long respuesta_multiple_id);
 }

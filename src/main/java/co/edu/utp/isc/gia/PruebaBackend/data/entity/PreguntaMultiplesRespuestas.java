@@ -15,7 +15,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
@@ -23,6 +25,7 @@ import lombok.Getter;
  */
 @Entity
 @Getter
+@Setter
 @PrimaryKeyJoinColumn(referencedColumnName = "id")
 @DiscriminatorValue("multiples_respuestas")
 @Table(name = "preguntas_multiples_respuestas")
@@ -42,6 +45,9 @@ public class PreguntaMultiplesRespuestas extends Pregunta {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "respuesta_multiple_id")
     private List<Opcion> opcionesRespuesta;
+    
+    @Transient
+    private Integer preguntasCorrectas = 0;
     
     public boolean addRespuesta(Opcion opcion) {
         if(opcionesRespuesta == null){

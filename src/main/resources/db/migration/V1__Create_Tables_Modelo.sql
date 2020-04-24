@@ -91,11 +91,9 @@ ALTER TABLE preguntas_unica_respuesta ADD FOREIGN KEY (opcion_respuesta_id) REFE
 
 CREATE TABLE respuestas_abiertas (
     id BIGINT NOT NULL PRIMARY KEY,
-    respuesta VARCHAR(255) NOT NULL,
-    pregunta_id BIGINT NOT NULL
+    respuesta VARCHAR(255) NOT NULL
 );
 ALTER TABLE respuestas_abiertas ADD FOREIGN KEY (id) REFERENCES respuestas(id) ON DELETE CASCADE;
-ALTER TABLE respuestas_abiertas ADD FOREIGN KEY (pregunta_id) REFERENCES preguntas_respuesta_abierta(id) ON DELETE CASCADE;
 
 
 CREATE TABLE opciones_respuestas (
@@ -104,10 +102,3 @@ CREATE TABLE opciones_respuestas (
 );
 ALTER TABLE opciones_respuestas ADD FOREIGN KEY (respuesta_id) REFERENCES respuestas(id) ON DELETE CASCADE;
 ALTER TABLE opciones_respuestas ADD FOREIGN KEY (opcion_id) REFERENCES opciones(id) ON DELETE CASCADE;
-/*
-CREATE TABLE respuestas_multiples (
-    pregunta_id BIGINT NOT NULL PRIMARY KEY
-);
-ALTER TABLE respuestas_multiples ADD FOREIGN KEY (pregunta_id) REFERENCES preguntas_multiples_respuestas(id) ON DELETE CASCADE;
-ALTER TABLE opciones ADD FOREIGN KEY (respuesta_multiple_id) REFERENCES respuestas_multiples(id) ON DELETE CASCADE;
-*/

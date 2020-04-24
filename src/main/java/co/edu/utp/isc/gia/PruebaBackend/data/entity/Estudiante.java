@@ -6,6 +6,7 @@
 package co.edu.utp.isc.gia.PruebaBackend.data.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -32,7 +32,6 @@ import lombok.ToString;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name="estudiantes")
 public class Estudiante implements Serializable {
     
@@ -41,12 +40,12 @@ public class Estudiante implements Serializable {
     private Long id;
     
     @Column(nullable = true)
-    private String Nombre;
+    private String nombre;
     
     @Column(nullable = false)
     private String email;
     
-    private Double nota;
+    private Double nota = 0.0;
     
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,11 +55,11 @@ public class Estudiante implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="estudiante_id")
     List<Respuesta> respuestas;
-    /*
+    
     public boolean addRespuesta(Respuesta respuesta) {
         if(respuestas == null){
             respuestas = new ArrayList<>();
         }
         return respuestas.add(respuesta);
-    }*/
+    }
 }
