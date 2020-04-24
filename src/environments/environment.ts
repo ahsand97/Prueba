@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   //apiUrl: 'http://localhost:8080'
-  apiUrl: 'https://protected-cliffs-43647.herokuapp.com/'
+  apiUrl: 'https://protected-cliffs-43647.herokuapp.com'
 };
 
 /*
